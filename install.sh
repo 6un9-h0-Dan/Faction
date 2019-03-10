@@ -1,3 +1,12 @@
+while getopts "k:" opt; do
+    case "$opt" in
+    k)  github_pat=$OPTARG
+        ;;
+    esac
+done
+
+
+
 # Install dependencies
 sudo apt-get update
 sudo apt-get install -y \
@@ -28,7 +37,10 @@ sudo service docker start
 sudo mkdir -p /opt/faction/
 sudo chown $USER:$USER /opt/faction
 
+echo "Making Faction folder structure.."
 mkdir -p /opt/faction/agents
+mkdir -p /opt/faction/cli
+mkdir -p /opt/faction/certs
 mkdir -p /opt/faction/data
 mkdir -p /opt/faction/global
 mkdir -p /opt/faction/install
@@ -36,14 +48,23 @@ mkdir -p /opt/faction/modules
 mkdir -p /opt/faction/uploads/payloads
 mkdir -p /opt/faction/uploads/files
 
-cp -R ./components/Marauder /opt/faction/agents
-cp -R ./components/dotnet-modules /opt/faction/modules/dotnet
-cp -R ./components/cli /opt/faction/
-cp -R ./components/factiondb /opt/faction/install
-cp -R ./services /opt/faction/services
-
 sudo chgrp -R 1337 /opt/faction/uploads
+sudo chgrp -R 1337 /opt/faction/certs
 sudo chmod -R 775 /opt/faction/uploads
+sudo chmod -R 775 /opt/faction/certs
+
+# Download the CLI
+if [ -z ${github_pat+x} ]; then
+    echo "Downloading Faction CLI.."
+    curl -L https://github.com/FactionC2/CLI/archive/master.zip > /opt/faction/cli/cli.zip
+else    
+    echo "Downloading Faction CLI using Github Access Key.."
+    curl -H "Authorization: token $github_pat" -L https://github.com/FactionC2/CLI/archive/master.zip > /opt/faction/cli/cli.zip
+fi
+
+unzip /opt/faction/cli/cli.zip -d /opt/faction/cli
+mv -R /opt/faction/cli/CLI-master/* /opt/faction/cli/
+rm -rf /opt/faction/cli/CLI-master/
 
 # Install Faction Client
 cd /opt/faction/cli
@@ -51,3 +72,6 @@ sudo python3 -m pip install pipenv
 sudo python3 -m pipenv install --system
 sudo python3 setup.py install
 faction complete | sudo tee /etc/bash_completion.d/faction > /dev/null
+
+# Complete!
+echo "Faction is ready for setup. Run 'faction setup' to get started"

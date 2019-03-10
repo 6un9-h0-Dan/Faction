@@ -2,14 +2,15 @@
 version: "3"
 services:
   db:
-    build: ./factiondb
+    image: postgres:latest
     ports:
       - "5432:5432"
     volumes:
       - /opt/faction/data:/var/lib/postgresql/data
     environment:
+      - POSTGRES_DB=faction
       - POSTGRES_USERNAME=postgres
-      - POSTGRES_PASSWORD=3ZRa5iuwC9dQZPAoYC_myJSKmaHeJa4TkEQz5Vm5tVz-n32g5dlnPLZjs3iJzGhmAd2qMUwsRWpDcmMt5qkc4A
+      - POSTGRES_PASSWORD=aWkW_NYTkT09cQ1xkeMYRbwPRArQkrf8mhq0VzeRf7_321Fzwn8Ma9whMXkYTRYoBCHx7EZyMCwTsjuiQzbLIw
   mq:
     image: rabbitmq:3-management
     ports:
@@ -17,15 +18,17 @@ services:
       - "8080:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=hyDgyQ-KerSBwgM_WPwgC7XAmluHYx4S-fDVJ3F1IQl1d1lDhSQvbBzzBbwdTeYwaC_HPwkpSjzSptv4ITIZxg
+      - RABBITMQ_DEFAULT_PASS=tYIaj9zMfBNSsgQ3Sh_3jpQ8h9bCX8OeTY00t36ZhjDlLdHGracN_Zv0wMuSICSXTIaV42freDgnWAkTgkyoWA
   console:
-    build: ../services/console
+    image: faction/console:latest
     ports:
       - "443:443"
     depends_on:
       - api
+    volumes:
+      - /opt/faction/certs:/opt/faction/certs
   api:
-    build: ../services/api
+    image: faction/api:latest
     depends_on:
       - mq
       - db
@@ -35,16 +38,16 @@ services:
       - /opt/faction/uploads:/opt/faction/uploads
     environment:
       - API_UPLOAD_DIR=/opt/faction/uploads
-      - FLASK_SECRET=tOzRdln4nIQ5HKoneQbbzIW6NAWYIH819ZJ2mJ9kS8ZRYIlHjokxz2AdphkUBuSokGG7IhWBu2PDBNW4xnz3uQ
+      - FLASK_SECRET=zf5qZeKElpG8hnfwBhqILIKc9qVHBQR6FW61e3--oesczxe3h3WETkvMdyRwyf7HZR0NoEs3n5HJIs54t7fbzQ
       - POSTGRES_HOST=db
       - POSTGRES_DATABASE=faction
       - POSTGRES_USERNAME=postgres
-      - POSTGRES_PASSWORD=3ZRa5iuwC9dQZPAoYC_myJSKmaHeJa4TkEQz5Vm5tVz-n32g5dlnPLZjs3iJzGhmAd2qMUwsRWpDcmMt5qkc4A
+      - POSTGRES_PASSWORD=aWkW_NYTkT09cQ1xkeMYRbwPRArQkrf8mhq0VzeRf7_321Fzwn8Ma9whMXkYTRYoBCHx7EZyMCwTsjuiQzbLIw
       - RABBIT_HOST=mq
       - RABBIT_USERNAME=guest
-      - RABBIT_PASSWORD=hyDgyQ-KerSBwgM_WPwgC7XAmluHYx4S-fDVJ3F1IQl1d1lDhSQvbBzzBbwdTeYwaC_HPwkpSjzSptv4ITIZxg
+      - RABBIT_PASSWORD=tYIaj9zMfBNSsgQ3Sh_3jpQ8h9bCX8OeTY00t36ZhjDlLdHGracN_Zv0wMuSICSXTIaV42freDgnWAkTgkyoWA
   core:
-    build: ../services/core
+    image: faction/core:latest
     depends_on:
       - mq
       - db
@@ -52,14 +55,14 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_DATABASE=faction
       - POSTGRES_USERNAME=postgres
-      - POSTGRES_PASSWORD=3ZRa5iuwC9dQZPAoYC_myJSKmaHeJa4TkEQz5Vm5tVz-n32g5dlnPLZjs3iJzGhmAd2qMUwsRWpDcmMt5qkc4A
+      - POSTGRES_PASSWORD=aWkW_NYTkT09cQ1xkeMYRbwPRArQkrf8mhq0VzeRf7_321Fzwn8Ma9whMXkYTRYoBCHx7EZyMCwTsjuiQzbLIw
       - RABBIT_HOST=mq
       - RABBIT_USERNAME=guest
-      - RABBIT_PASSWORD=hyDgyQ-KerSBwgM_WPwgC7XAmluHYx4S-fDVJ3F1IQl1d1lDhSQvbBzzBbwdTeYwaC_HPwkpSjzSptv4ITIZxg
+      - RABBIT_PASSWORD=tYIaj9zMfBNSsgQ3Sh_3jpQ8h9bCX8OeTY00t36ZhjDlLdHGracN_Zv0wMuSICSXTIaV42freDgnWAkTgkyoWA
       - SYSTEM_USERNAME=system
-      - SYSTEM_PASSWORD=Ki0LXn8dWjdfUDTC5fEgOvz4AvhxTV87HaY2PuagC4tzErF9vcQ-Rcy8oSKmABt6YCNTw_cYlL586-FosVsacg
-  dotnet-build:
-    build: ../services/dotnet-build
+      - SYSTEM_PASSWORD=X5p5-4ht2ZYvTefS7sXwEDXkKEp4Rd7juz4V3ZinorSapxKTgY1ts3m-WzBKDPXZBOqNzZf-27MdmekAIZ9LlA
+  build-dotnet:
+    image: faction/build-dotnet:latest
     depends_on:
       - core
       - api
@@ -69,7 +72,7 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_DATABASE=faction
       - POSTGRES_USERNAME=postgres
-      - POSTGRES_PASSWORD=3ZRa5iuwC9dQZPAoYC_myJSKmaHeJa4TkEQz5Vm5tVz-n32g5dlnPLZjs3iJzGhmAd2qMUwsRWpDcmMt5qkc4A
+      - POSTGRES_PASSWORD=aWkW_NYTkT09cQ1xkeMYRbwPRArQkrf8mhq0VzeRf7_321Fzwn8Ma9whMXkYTRYoBCHx7EZyMCwTsjuiQzbLIw
       - RABBIT_HOST=mq
       - RABBIT_USERNAME=guest
-      - RABBIT_PASSWORD=hyDgyQ-KerSBwgM_WPwgC7XAmluHYx4S-fDVJ3F1IQl1d1lDhSQvbBzzBbwdTeYwaC_HPwkpSjzSptv4ITIZxg
+      - RABBIT_PASSWORD=tYIaj9zMfBNSsgQ3Sh_3jpQ8h9bCX8OeTY00t36ZhjDlLdHGracN_Zv0wMuSICSXTIaV42freDgnWAkTgkyoWA
