@@ -16,7 +16,8 @@ sudo apt-get install -y \
     gnupg-agent \
     software-properties-common \
     python3 \
-    python3-pip
+    python3-pip \
+    unzip
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add 
 sudo add-apt-repository \
