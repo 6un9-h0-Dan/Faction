@@ -5,8 +5,6 @@ while getopts "k:" opt; do
     esac
 done
 
-
-
 # Install dependencies
 sudo apt-get update
 sudo apt-get install -y \
@@ -42,7 +40,7 @@ sudo mkdir -p /opt/faction/
 sudo chown $USER:$USER /opt/faction
 
 echo "Making Faction folder structure.."
-mkdir -p /opt/faction/agents
+mkdir -p /opt/faction/agents/build
 mkdir -p /opt/faction/cli
 mkdir -p /opt/faction/certs
 mkdir -p /opt/faction/data
