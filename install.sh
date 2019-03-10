@@ -64,7 +64,7 @@ else
 fi
 
 unzip /opt/faction/cli/cli.zip -d /opt/faction/cli
-mv -R /opt/faction/cli/CLI-master/* /opt/faction/cli/
+mv /opt/faction/cli/CLI-master/* /opt/faction/cli/
 rm -rf /opt/faction/cli/CLI-master/
 
 # Install Faction Client
