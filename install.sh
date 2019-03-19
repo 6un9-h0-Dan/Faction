@@ -1,5 +1,8 @@
-while getopts "k:" opt; do
-    case "$opt" in
+#!/bin/bash
+
+while getopts ":k" opt
+ do
+    case $opt in
     k)  github_pat=$OPTARG
         ;;
     esac
