@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while getopts ":k" opt
+while getopts "k:" opt
  do
     case $opt in
     k)  github_pat=$OPTARG
