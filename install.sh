@@ -18,7 +18,7 @@ sudo apt-get install -y \
     software-properties-common \
     python3 \
     python3-pip \
-    unzip
+    git
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add 
 sudo add-apt-repository \
@@ -58,18 +58,7 @@ sudo chgrp -R 1337 /opt/faction/certs
 sudo chmod -R 775 /opt/faction/uploads
 sudo chmod -R 775 /opt/faction/certs
 
-# Download the CLI
-if [ -z ${github_pat+x} ]; then
-    echo "Downloading Faction CLI.."
-    curl -L https://github.com/FactionC2/CLI/archive/master.zip > /opt/faction/cli/cli.zip
-else    
-    echo "Downloading Faction CLI using Github Access Key.."
-    curl -H "Authorization: token $github_pat" -L https://github.com/FactionC2/CLI/archive/master.zip > /opt/faction/cli/cli.zip
-fi
-
-unzip /opt/faction/cli/cli.zip -d /opt/faction/cli
-mv /opt/faction/cli/CLI-master/* /opt/faction/cli/
-rm -rf /opt/faction/cli/CLI-master/
+git clone https://github.com/FactionC2/CLI /opt/faction/cli
 
 # Install Faction Client
 cd /opt/faction/cli
