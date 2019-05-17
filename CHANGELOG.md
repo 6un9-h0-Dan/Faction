@@ -1,5 +1,5 @@
 # Faction Changelog
-Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of enhancements and bug fixes for the various components. The dates may not be _entirely_ accurate but try to represent major updates to the project up to the point specified.
+Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
 ## 2019-05-17
 ### Docs
