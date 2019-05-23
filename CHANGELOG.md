@@ -1,6 +1,15 @@
 # Faction Changelog
 Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
+
+## 2019-05-22
+### Console
+* Fixed issue with deleted transports not being updated
+
+### API
+* Fixed issue with transport updates not being broadcast
+* Fixed issue with new transports not showing up (again)
+
 ## 2019-05-17
 ### Docs
 * Added API information for [Transports](https://www.factionc2.com/docs/development/api/#transport)
