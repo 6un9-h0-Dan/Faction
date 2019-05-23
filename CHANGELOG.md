@@ -9,6 +9,8 @@ Because of the microservice nature of Faction, there's no one set "version" for 
 ### API
 * Fixed issue with transport updates not being broadcast
 * Fixed issue with new transports not showing up (again)
+* Updated packages for real this time.
+* Dropped logging down to WARNING (from DEBUG)
 
 ## 2019-05-17
 ### Docs
