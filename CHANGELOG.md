@@ -1,6 +1,17 @@
 # Faction Changelog
 Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
+## 2019-06-03
+### TransportHTTP
+* Updated SSL config to allow for TLS1.0 and TLS1.1
+
+### Marauder
+* PR from @s3b4stian to allow Marauder to speak TLS1.1 and TLS1.2
+* More logging for the HTTP Transport module
+* Added Azure Pipelines CI (It totally doesn't work yet, but its the thought that counts)
+
+### Console
+* Added warning about possible long login time ([issue #10](https://github.com/FactionC2/Faction/issues/10))
 
 ## 2019-05-22
 ### Console
