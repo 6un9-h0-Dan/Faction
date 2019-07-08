@@ -1,6 +1,29 @@
 # Faction Changelog
 Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
+## 2019-07-07
+### TransportHTTP
+* [Completely re-wrote profile format](https://github.com/FactionC2/TransportHTTP/pull/5) (which meant rewriting basically the whole transport too..)
+* [Added Azure Pipelines](https://github.com/FactionC2/TransportHTTP/pull/5) so we can devops the crap out of this thing
+
+### Marauder
+* Updated HTTP Transport to comply with new profile stuff
+
+### API
+* Fixed a possible JSON formatting issue where [single quotes were used instead of double](https://github.com/FactionC2/API/pull/32). Great catch @s3b4stian!
+* Fixed an issue with the Transport API [not sending the right params](https://github.com/FactionC2/API/pull/18/) (Thanks @s3b4stian!!)
+* Updated dependencies
+
+### Console
+* When you submit a new password, [the password fields are cleared](https://github.com/FactionC2/Console/pull/10) (Thanks @Static-Flow!)
+* Updated depenencies
+
+### CLI
+* [Many](https://github.com/FactionC2/CLI/pull/13) [imporovements](https://github.com/FactionC2/CLI/pull/17) to the `--build` option, allowing users to build Faction docker containers from scratch. (Thanks @s3b4stian!)
+* [CLI now prompts for IP address/hostname if one isn't specified](https://github.com/FactionC2/CLI/pull/11)(Thanks @c24dotspace!)
+* [Added Error handling around IP Address/Hostname entry](https://github.com/FactionC2/CLI/pull/9)(Thanks @digital-shokunin!)
+* Updated dependencies
+
 ## 2019-06-03
 ### TransportHTTP
 * Updated SSL config to allow for TLS1.0 and TLS1.1
