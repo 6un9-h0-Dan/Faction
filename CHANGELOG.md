@@ -1,6 +1,10 @@
 # Faction Changelog
 Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
+## 2019-07-14
+### TransportHTTP
+* Added [Configurable Default Request Handling](https://github.com/FactionC2/TransportHTTP/pull/7). Details [here](https://github.com/FactionC2/TransportHTTP#default-response)
+
 ## 2019-07-07
 ### TransportHTTP
 * [Completely re-wrote profile format](https://github.com/FactionC2/TransportHTTP/pull/5) (which meant rewriting basically the whole transport too..)
