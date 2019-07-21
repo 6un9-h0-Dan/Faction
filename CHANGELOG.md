@@ -1,6 +1,21 @@
 # Faction Changelog
 Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
+## 2019-07-21
+### Core
+* [Fixed](https://github.com/FactionC2/Core/pull/15) that problem where [if you typed something that wasn't a command, Faction would crash](https://github.com/FactionC2/Faction/issues/30)
+
+#### Docs
+* Completely [new docs site](https://www.factionc2.com) hosted through Gitbook. 
+* API documentation greatly improved
+
+### API
+* Fixed the [Agent Console Message API](https://github.com/FactionC2/API/pull/39/files#diff-eaea58bf509d066552409d14f6e7051dL30)
+* Removed Transports ability to delete transports (https://github.com/FactionC2/API/pull/39/files#diff-a7c7e5ca31d61f4ea674904c357e83b4L44)
+* [Changed the APIKey URL](https://github.com/FactionC2/API/pull/39/files#diff-3f41e546893dc64b71aaacad12cad815R66) from `/api/v1/user/:user_id/apikeys/` to `/api/v1/user/:user_id/apikey/`
+
+(I didn't actually merge the stuff from 2019-07-14 into master, so that was fixed too. Whoops.)
+
 ## 2019-07-14
 ### TransportHTTP
 * Added [Configurable Default Request Handling](https://github.com/FactionC2/TransportHTTP/pull/7). Details [here](https://github.com/FactionC2/TransportHTTP#default-response)
