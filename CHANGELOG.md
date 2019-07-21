@@ -13,8 +13,10 @@ Because of the microservice nature of Faction, there's no one set "version" for 
 * Fixed the [Agent Console Message API](https://github.com/FactionC2/API/pull/39/files#diff-eaea58bf509d066552409d14f6e7051dL30)
 * Removed Transports ability to delete transports (https://github.com/FactionC2/API/pull/39/files#diff-a7c7e5ca31d61f4ea674904c357e83b4L44)
 * [Changed the APIKey URL](https://github.com/FactionC2/API/pull/39/files#diff-3f41e546893dc64b71aaacad12cad815R66) from `/api/v1/user/:user_id/apikeys/` to `/api/v1/user/:user_id/apikey/`
+* Merged in changes from 2019-07-07. Whoops.
 
-(I didn't actually merge the stuff from 2019-07-14 into master, so that was fixed too. Whoops.)
+### Console
+* Merged in changes form 2019-07-07
 
 ## 2019-07-14
 ### TransportHTTP
