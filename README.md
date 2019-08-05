@@ -1,10 +1,10 @@
 # Faction C2 Framework
 
-This repo contains the install script for Faction and serves as the general landing area for Faction issues. If you don't know where to put an issue, it goes here. 
+Faction is a C2 framework for security professionals, providing an easy way to extend and interact with agents. It focuses on providing an easy, stable, and approachable platform for C2 communications through well documented REST and Socket.IO APIs.
+
+This repo contains the install script for Faction and serves as the general landing area for Faction issues. For information on installing and using Faction, checkout the docs at https://www.factionc2.com/docs/
 
 Note that Faction is currently in BETA. It is buggy, but should be stable enough to start building stuff for it. 
-
-For information on installing and using Faction, checkout the docs at https://www.factionc2.com/docs/
 
 ## Issues
 Please submit any issues you have with Faction [here](https://github.com/FactionC2/Faction/issues) and use the provided templates if applicable.
