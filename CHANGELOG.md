@@ -1,6 +1,10 @@
 # Faction Changelog
 Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
+## 2019-09-11
+### CLI
+* [Updated](https://github.com/FactionC2/CLI/commit/d95ca78bde2566db5e31185e4c55f76093113d5c) git pulls to only pull master branches
+
 ## 2019-07-21
 ### Core
 * [Fixed](https://github.com/FactionC2/Core/pull/15) that problem where [if you typed something that wasn't a command, Faction would crash](https://github.com/FactionC2/Faction/issues/30)
