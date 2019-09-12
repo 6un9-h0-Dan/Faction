@@ -38,7 +38,7 @@ There's a list of enhancements that have been created in the [Faction issues pag
 ### Process Injection
 The way I see this working, the following things will need to be created
 
-* A way to generate shellcode for a given payload. Faction Agents will get an additional configuration setting in `FactionAgent.dotnet.json` that will provide the command to run to get shellcode.
+* A way to generate shellcode for a given payload. This likely will be added to the build servers for a given language, or alternatively added as an option in `FactionAgent.language.json` which would provide a command to run against a specified payload that would return shellcode (for example, leveraging donut)
 * A way to allow the user to specify they want shellcode on the command line. I suspect this will be surfaced in a similar way as the `f2:file/foo` for commands that use files. Probably something like `f2:shellcode/payloadname`. 
 * A module that handles shellcode injection. My thoughts are to leverage TikiLoader from TikiTorch for this.
 
