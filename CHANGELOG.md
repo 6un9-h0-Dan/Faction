@@ -2,14 +2,14 @@
 Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
 ## 2019-09-23
-## CLI
+### CLI
 * Logging rotation/compression added to Docker Contatiners (thanks @n1xbyte!)
 * Added `--release` switch to pick from installing Faction from stable or development sources
 * Changed `--build` switch to `--build-from-source`
 * Changed `--dev` switch to `--build-for-dev-environment`
 * Dependency updates
 
-## Console
+### Console
 * Commands and parameters now [autocomplete](https://github.com/FactionC2/Console/commit/41c69708295c965ddbd8ec3749d191dfa9c2bed7) ([also here](https://github.com/FactionC2/Console/commit/7e7ac5839c67ff27bee7f3c147e1272f6ac084a6))
 * [Cleaned up the agents list](https://github.com/FactionC2/Console/commit/2575edc01d3c82f88eb9127062a4b13248e61f5a) on console view to make it easier to read
 * [Updated "New Payload" modal window](https://github.com/FactionC2/Console/commit/2575edc01d3c82f88eb9127062a4b13248e61f5a##diff-2f015550c60a424aa151aed7dbc86ad8) to pick the first option for each selection, so now you just have to set your changes
@@ -17,20 +17,20 @@ Because of the microservice nature of Faction, there's no one set "version" for 
 * [Made logging clearer](https://github.com/FactionC2/Console/commit/7e7ac5839c67ff27bee7f3c147e1272f6ac084a6)
 * Dependency updates
 
-## Core
+### Core
 * [Autocomplete updates](https://github.com/FactionC2/Core/commit/0fc1c0c5919dbd2f3cb3100bbb7c9652bdfec96a)
 * [Fixes crash](https://github.com/FactionC2/Core/commit/f190671492ec9340aa86333d70d32de3e97764e0) when a show command was sent without telling Core what to show.
 * Dependency updates
 
-## API
+### API
 * [Added Commands API endpoint](https://github.com/FactionC2/API/commit/bfbdb4c61336575e5e6dc55c8cbad1fe12d8756c) (used for autocomplete)
 * [CORS update](https://github.com/FactionC2/API/commit/3c9b727e7992235eca3fc17acae0416c18d5bf9c) for socketio (need to revisit if we even need to do this in production)
 * Dependency updates
 
-## Build-Server-Dotnet
+### Build-Server-Dotnet
 * Dependency updates
 
-## Faction.Common
+### Faction.Common
 * [Added agentCommandsUpdated](https://github.com/FactionC2/Faction.Common/commit/b17268cc735ded959b0d3eefaba473069a95e930) message type
 * Dependency updates
 
