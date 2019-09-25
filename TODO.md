@@ -42,12 +42,10 @@ The way I see this working, the following things will need to be created
 * A way to allow the user to specify they want shellcode on the command line. I suspect this will be surfaced in a similar way as the `f2:file/foo` for commands that use files. Probably something like `f2:shellcode/payloadname`. 
 * A module that handles shellcode injection. My thoughts are to leverage TikiLoader from TikiTorch for this.
 
-### Auto-Complete in the Console
-Because of the way commands are registered from modules, we have details on each command, its parameters, and in some cases the values of said paramaters. This *should* be able to be handled through the API with an endpoint like `/agent/:agent_id/command/` or something. 
+### Auto-Complete Improvements
+Right now, we have more of an "auto tell you what to type" setup in the console. It works by watching the console input and using that to filter down the list of available commands. Once the user presses "space", if the user has typed a valid command a list of parameters is displayed.
 
-The idea here would be that you post a message with the partial command, the endpoint replies with a list of potential matches, filtered based on what modules are loaded by the agent.
-
-Console wise we could probably just leverage one of the billion VueJS autocomplete modules.
+The big improvement we'd like to make is catching the tab key and using that to properly autocomplete options. The way I see this working is when tab is presesd, the position of the cursor is sent to an "autocomplete" function. This function (or series of functions) handles spliting the input string into three parts: the first part of the command, the word being autocompleted, and the rest of the command. The word is autocompeted, the three parts of the command being typed are combined again, the cursor is set at the end of the autocompleted word, and the contents of the input replaced with this new string.
 
 ### Version information
 This is detailed a bit here: https://github.com/FactionC2/Faction/issues/31
