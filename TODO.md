@@ -26,8 +26,15 @@ The other thing that needs to be done is to see what can be done to *try* and br
 * make_token
 
 ## Transports
+### New Transport Types
 * DNS
 * Websockets
+
+### HTTP Transport Updates
+* Automatic Let's Encrypt enrollment. There are a couple of .NET packages for ACME that should make this relatively easy.
+* Profile enhancements. There's plenty of room for improvement in the functionality of the HTTP profiles, including things like:
+  - Mangling payload messages. Right now the profile just embeds the encrypted, base64 encoded message in the body of response. We should have additional options for mangling the message using different encodings.
+  - Splitting the message between multiple spots in an HTML document
 
 ## Functionality
 Functionality is typically going to involve multiple changes across Faction components. If you'd like to work on something here, please open an issue so we can discuss it before you get to deep in implementation
@@ -46,6 +53,15 @@ The way I see this working, the following things will need to be created
 Right now, we have more of an "auto tell you what to type" setup in the console. It works by watching the console input and using that to filter down the list of available commands. Once the user presses "space", if the user has typed a valid command a list of parameters is displayed.
 
 The big improvement we'd like to make is catching the tab key and using that to properly autocomplete options. The way I see this working is when tab is presesd, the position of the cursor is sent to an "autocomplete" function. This function (or series of functions) handles spliting the input string into three parts: the first part of the command, the word being autocompleted, and the rest of the command. The word is autocompeted, the three parts of the command being typed are combined again, the cursor is set at the end of the autocompleted word, and the contents of the input replaced with this new string.
+
+On the API side, I'd like to include files uploaded to Faction in the autocomplete (so when you type `f2:files` it allows you to easily complete filenames.
+
+### Logging
+Faction has a pretty well fleshed out database schema that we can use to generate logs. My thoughts around this are to add some API endpoints for logging that kick off SQL queries, returning the results as CSV files. I'm not interested in generating "ready to ship reports", this feature should be centered around providing details around Faction usage. Some ideas of logs that should be available:
+
+* Activitiy: A log detailing tasks and results. Columns should include AgentName, InternalIp, Username, Operator Username, Activity Type (AgentTask or AgentTaskResult), Mitre reference (if available)
+* Agent Lifecycle: A log detailing what agents were spawned from which payload, transports used, etc
+* IOCs: A log detailing the IOCs created by Agent Activity
 
 ### Version information
 This is detailed a bit here: https://github.com/FactionC2/Faction/issues/31
