@@ -7,6 +7,9 @@ There's a list of [issues here](https://github.com/FactionC2/Faction/issues/) th
 The other thing that needs to be done is to see what can be done to *try* and break Faction.
 
 ## Modules
+Building and updating modules will involve playing around with .NET. Details on how to build modules are covered [here](https://www.factionc2.com/developing/modules/dotnet). Of everything on this list, modules are probably the easiest thing to build in Faction.. at least they're supposed to be.
+
+### New Modules
 * Mimikatz
 * Ghostpack (don't know if this should be split out or not)
   - Rubeus
@@ -17,15 +20,16 @@ The other thing that needs to be done is to see what can be done to *try* and br
 * Persistance (SharPersist maybe?)
 * AD Exploration (PowerView functionality)
 
-## Existing Module Updates
-### stdlib
-* Screenshot command (not sure if we can write this in such a way to be platform agnostic)
-
-### winlib
-* steal_token
-* make_token
+### Existing Module Updates
+* stdlib
+  - Screenshot command (not sure if we can write this in such a way to be platform agnostic)
+* winlib
+ - steal_token
+ - make_token
 
 ## Transports
+Transports are a little more complicated to build, they consist of an agent module (written in .NET for now) that handles communicating with a transport server (written in whatever language you want), which in turn handles communicating with the Faction API.
+
 ### New Transport Types
 * DNS
 * Websockets
@@ -43,18 +47,18 @@ Functionality is typically going to involve multiple changes across Faction comp
 There's a list of enhancements that have been created in the [Faction issues page](https://github.com/FactionC2/Faction/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement). They've been tagged `enhancement`
 
 ### Process Injection
-The way I see this working, the following things will need to be created
+The way I see this working, the following things will need to be created.
 
-* A way to generate shellcode for a given payload. This likely will be added to the build servers for a given language, or alternatively added as an option in `FactionAgent.language.json` which would provide a command to run against a specified payload that would return shellcode (for example, leveraging donut)
-* A way to allow the user to specify they want shellcode on the command line. I suspect this will be surfaced in a similar way as the `f2:file/foo` for commands that use files. Probably something like `f2:shellcode/payloadname`. 
-* A module that handles shellcode injection. My thoughts are to leverage TikiLoader from TikiTorch for this.
+* A way to generate shellcode for a given payload. This likely will be added to the build servers for a given language, or alternatively added as an option in `FactionAgent.language.json` which would provide a command to run against a specified payload that would return shellcode (for example, leveraging donut). This will require programming in .NET
+* A way to allow the user to specify they want shellcode on the command line. I suspect this will be surfaced in a similar way as the `f2:file/foo` for commands that use files. Probably something like `f2:shellcode/payloadname`. This will require changes to the API (python) and Console (Vue/javascript).
+* A module that handles shellcode injection. My thoughts are to leverage TikiLoader from TikiTorch for this. This would require .NET programming
 
 ### Auto-Complete Improvements
 Right now, we have more of an "auto tell you what to type" setup in the console. It works by watching the console input and using that to filter down the list of available commands. Once the user presses "space", if the user has typed a valid command a list of parameters is displayed.
 
-The big improvement we'd like to make is catching the tab key and using that to properly autocomplete options. The way I see this working is when tab is presesd, the position of the cursor is sent to an "autocomplete" function. This function (or series of functions) handles spliting the input string into three parts: the first part of the command, the word being autocompleted, and the rest of the command. The word is autocompeted, the three parts of the command being typed are combined again, the cursor is set at the end of the autocompleted word, and the contents of the input replaced with this new string.
+The big improvement we'd like to make is catching the tab key and using that to properly autocomplete options. The way I see this working is when tab is pressed, the position of the cursor is sent to an "autocomplete" function. This function (or series of functions) handles spliting the input string into three parts: the first part of the command, the word being autocompleted, and the rest of the command. The word is autocompeted, the three parts of the command being typed are combined again, the cursor is set at the end of the autocompleted word, and the contents of the input replaced with this new string. This will involve changes to the Console, which means writting in Vue/Javascript
 
-On the API side, I'd like to include files uploaded to Faction in the autocomplete (so when you type `f2:files` it allows you to easily complete filenames.
+I'd also like to include files uploaded to Faction in the autocomplete so when you type `f2:files` it allows you to easily complete filenames. This will involve changes to API (python) and Console (Vue/js)
 
 ### Logging
 Faction has a pretty well fleshed out database schema that we can use to generate logs. My thoughts around this are to add some API endpoints for logging that kick off SQL queries, returning the results as CSV files. I'm not interested in generating "ready to ship reports", this feature should be centered around providing details around Faction usage. Some ideas of logs that should be available:
@@ -63,5 +67,7 @@ Faction has a pretty well fleshed out database schema that we can use to generat
 * Agent Lifecycle: A log detailing what agents were spawned from which payload, transports used, etc
 * IOCs: A log detailing the IOCs created by Agent Activity
 
+This will involve updates to the API (python) and some minor updates to the console (Vue/js)
+
 ### Version information
-This is detailed a bit here: https://github.com/FactionC2/Faction/issues/31
+This is detailed a bit here: https://github.com/FactionC2/Faction/issues/31. It touches on all aspects of the Faction stack, so would involve coding in Python, .NET, and Vue/javascript
