@@ -24,8 +24,8 @@ Building and updating modules will involve playing around with .NET. Details on 
 * stdlib
   - Screenshot command (not sure if we can write this in such a way to be platform agnostic)
 * winlib
- - steal_token
- - make_token
+  - steal_token
+  - make_token
 
 ## Transports
 Transports are a little more complicated to build, they consist of an agent module (written in .NET for now) that handles communicating with a transport server (written in whatever language you want), which in turn handles communicating with the Faction API.
