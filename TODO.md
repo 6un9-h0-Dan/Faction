@@ -46,6 +46,15 @@ Functionality is typically going to involve multiple changes across Faction comp
 ### Enhancements
 There's a list of enhancements that have been created in the [Faction issues page](https://github.com/FactionC2/Faction/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement). They've been tagged `enhancement`
 
+### Auto-Run Commands
+It'd be nice to have an option to auto-run commands when an agent first checks in. This would be best implemented by adding the ability to add a list of commands to a payload, that way you could have different payloads set to auto-run different commands (like a phishing specific payload that runs some recon commands on first checkin).
+
+Implementing this would involve:
+  * Updating the DB to add an "AutoRunCommands" field. Since there's no native List<string> type for a database, we'd probably have to store the commands as a base64 encoded strings seperated by commas. Then when we retrieved these strings, we'd split the string on the commas, base64 decode the results. This way commands could have a comma in them without throwing off the retrieval. This will require programming in .NET
+  * Updating Core to add these commands to an agents checkin response. Right now when an agent checks in, Core creates a series of "SET" commands (updates the name, agent password, jitter, beacon internval, etc). We'd need to update this process to add any auto-run commands to this list. This could leverage the existing command processing to generate tasks, just send each command provided through as if it was entered on the console. This will require programming in .NET
+  * Update API to return these autorun commands (base64 decoded) in response to /api/v1/payload requests. This will require programming in Python.
+  * Update Console to surface this functionality on the Payload creation page. This could be as simple as textbox which each command entered on a new line. This will require programing in Vue/Javascript
+
 ### Process Injection
 The way I see this working, the following things will need to be created.
 
