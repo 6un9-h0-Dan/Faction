@@ -58,7 +58,7 @@ sudo chgrp -R 1337 /opt/faction/certs
 sudo chmod -R 775 /opt/faction/uploads
 sudo chmod -R 775 /opt/faction/certs
 
-git clone https://github.com/FactionC2/CLI /opt/faction/cli
+git clone --single-branch --branch=master https://github.com/FactionC2/CLI /opt/faction/cli
 
 # Install Faction Client
 cd /opt/faction/cli
