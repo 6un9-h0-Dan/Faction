@@ -65,7 +65,7 @@ cd /opt/faction/cli
 sudo python3 -m pip install pipenv
 sudo python3 -m pipenv install --system
 sudo python3 setup.py install
-faction complete | sudo tee /etc/bash_completion.d/faction > /dev/null
+cat /opt/faction/cli/bash_autocomplete | sudo tee /etc/bash_completion.d/faction > /dev/null
 
 # Complete!
 echo "Faction is ready for setup. Run 'faction setup' to get started"
