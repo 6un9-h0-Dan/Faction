@@ -28,6 +28,9 @@ Because of the microservice nature of Faction, there's no one set "version" for 
 ### Console
 * Dependency Updates
 
+### Marauder
+* Added an `info` command to return info about the agent
+
 ## 2019-09-23
 ### CLI
 * Logging rotation/compression added to Docker Contatiners (thanks @n1xbyte!)
