@@ -1,6 +1,33 @@
 # Faction Changelog
 Because of the microservice nature of Faction, there's no one set "version" for Faction. Its always assumed that the master branch of [each repository](https://github.com/FactionC2) is the latest stable version. Here we try and keep track of major enhancements and bug fixes for the various components in Faction. The dates may not be _entirely_ accurate but try to represent significant updates to the project up to the point specified.
 
+## 2019-10-20
+### FactionPy
+* New project to centeralize code for Database, RabbitMQ, and related functionality
+
+### CLI
+* Updated CLI to leverage FactionPy for DB interactions and creating new objects (users, roles, transports, etc)
+* This fixed some issues that came up in migrating to .NET Core 3.0
+* Dependency Updates
+
+### Core
+* [Fixed an issue](https://github.com/FactionC2/Core/commit/dd5fa6d53578e6680abe28ba6367990ada4163bb) where Core would crash if you entered an empty SET command ([for reals this time](https://github.com/FactionC2/Faction/issues/34))
+* Upgraded to .NET Core 3.0
+* Dependency Updates
+
+### .NET Build Server
+* Upgraded to .NET Core 3.0
+* Updated Docker image to use lastest version of Mono in the 6.x branch
+* Dependency Updates
+
+### API
+* [Better error handling](https://github.com/FactionC2/API/pull/67) around loading config values (Thanks @3lpsy!)
+* [Logging improvements](https://github.com/FactionC2/API/pull/68) (Thanks @3lpsy!)
+* Dependency Updates
+
+### Console
+* Dependency Updates
+
 ## 2019-09-23
 ### CLI
 * Logging rotation/compression added to Docker Contatiners (thanks @n1xbyte!)
