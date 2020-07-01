@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faction-console
+spec:
+  selector:
+    matchLabels:
+      app: faction-console
+  template:
+    metadata:
+      labels:
+        app: faction-console
+    spec:
+      containers:
+        - name: faction-console
+          image: faction-console

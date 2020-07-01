@@ -1,0 +1,2197 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hasura-config-init
+  labels:
+    app: faction-hasura
+data:
+  metadata.json: |-
+    {
+      "version": 2,
+      "tables": [
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_checkins"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            },
+            {
+              "name": "transport",
+              "using": {
+                "foreign_key_constraint_on": "transport_id"
+              }
+            }
+          ],
+          "insert_permissions": [
+            {
+              "role": "agent",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "agent_id",
+                  "id",
+                  "transport_id",
+                  "hmac",
+                  "iv",
+                  "source_ip",
+                  "received",
+                  "message"
+                ]
+              }
+            },
+            {
+              "role": "transport",
+              "permission": {
+                "check": {},
+                "set": {
+                  "transport_id": "x-hasura-transport-id"
+                },
+                "columns": [
+                  "agent_id",
+                  "id",
+                  "transport_id",
+                  "hmac",
+                  "iv",
+                  "source_ip",
+                  "received",
+                  "message"
+                ]
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "agent_id",
+                  "source_ip",
+                  "transport_id",
+                  "iv",
+                  "hmac",
+                  "message",
+                  "received"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_modules_xref"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            },
+            {
+              "name": "module",
+              "using": {
+                "foreign_key_constraint_on": "module_id"
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "agent",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "module_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "module_id"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_task_messages"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            },
+            {
+              "name": "agent_task",
+              "using": {
+                "foreign_key_constraint_on": "agent_task_id"
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "agent_id",
+                  "agent_task_id",
+                  "iv",
+                  "hmac",
+                  "message",
+                  "sent",
+                  "created"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "sent",
+                  "agent_id",
+                  "agent_task_id",
+                  "id",
+                  "hmac",
+                  "iv",
+                  "created",
+                  "message"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_task_updates"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            },
+            {
+              "name": "agent_task",
+              "using": {
+                "foreign_key_constraint_on": "task_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "iocs",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_task_update_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "iocs"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "complete",
+                  "success",
+                  "agent_id",
+                  "id",
+                  "task_id",
+                  "content",
+                  "content_id",
+                  "task_name",
+                  "type",
+                  "received",
+                  "message"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "agent_id",
+                  "task_id",
+                  "task_name",
+                  "message",
+                  "type",
+                  "content",
+                  "content_id",
+                  "complete",
+                  "success",
+                  "received"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_tasks"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            },
+            {
+              "name": "console_message",
+              "using": {
+                "foreign_key_constraint_on": "console_message_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "agent_task_messages",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_task_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_task_messages"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_task_updates",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "task_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_task_updates"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "agent_id",
+                  "console_message_id",
+                  "action",
+                  "command",
+                  "created"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "console_message_id",
+                  "id",
+                  "name",
+                  "created",
+                  "action",
+                  "command"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_transport_types"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "agent_type_id",
+                  "transport_type_guid",
+                  "build_command",
+                  "build_location"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_type_id",
+                  "id",
+                  "build_location",
+                  "build_command",
+                  "name",
+                  "transport_type_guid"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_transports_xref"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            },
+            {
+              "name": "transport",
+              "using": {
+                "foreign_key_constraint_on": "transport_id"
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_type_architectures"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_architecture_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "agent_type_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_type_id",
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_type_configurations"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_configuration_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "agent_type_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_type_id",
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_type_formats"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_format_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "agent_type_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_type_id",
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_type_operating_systems"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_operating_system_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "agent_type_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_type_id",
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_type_versions"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_version_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "agent_type_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_type_id",
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agent_types"
+          },
+          "object_relationships": [
+            {
+              "name": "language",
+              "using": {
+                "foreign_key_constraint_on": "language_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "agents",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agents"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_transport_types",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_transport_types"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_type_architectures",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_type_architectures"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_type_configurations",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_type_configurations"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_type_formats",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_type_formats"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_type_operating_systems",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_type_operating_systems"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_type_versions",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_type_versions"
+                  }
+                }
+              }
+            },
+            {
+              "name": "commands",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "commands"
+                  }
+                }
+              }
+            },
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "guid",
+                  "authors",
+                  "language_id",
+                  "build_command",
+                  "build_location",
+                  "development"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "development",
+                  "id",
+                  "language_id",
+                  "authors",
+                  "build_command",
+                  "build_location",
+                  "guid",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "agents"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            },
+            {
+              "name": "payload",
+              "using": {
+                "foreign_key_constraint_on": "payload_id"
+              }
+            },
+            {
+              "name": "transport",
+              "using": {
+                "foreign_key_constraint_on": "transport_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "agent_checkins",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_checkins"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_modules_xrefs",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_modules_xref"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_task_messages",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_task_messages"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_tasks",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_tasks"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_task_updates",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_task_updates"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_transports_xrefs",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_transports_xref"
+                  }
+                }
+              }
+            },
+            {
+              "name": "console_messages",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "console_messages"
+                  }
+                }
+              }
+            },
+            {
+              "name": "faction_files",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "faction_files"
+                  }
+                }
+              }
+            },
+            {
+              "name": "staging_responses",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "staging_responses"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "admin",
+                  "agent_type_id",
+                  "beacon_interval",
+                  "external_ip",
+                  "hostname",
+                  "id",
+                  "initial_checkin",
+                  "internal_ip",
+                  "jitter",
+                  "last_checkin",
+                  "name",
+                  "operating_system",
+                  "payload_id",
+                  "pid",
+                  "staging_id",
+                  "staging_response_id",
+                  "transport_id",
+                  "username",
+                  "visible"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "admin",
+                  "agent_type_id",
+                  "beacon_interval",
+                  "external_ip",
+                  "hostname",
+                  "id",
+                  "initial_checkin",
+                  "internal_ip",
+                  "jitter",
+                  "last_checkin",
+                  "name",
+                  "operating_system",
+                  "payload_id",
+                  "pid",
+                  "staging_id",
+                  "staging_response_id",
+                  "transport_id",
+                  "username",
+                  "visible"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "api_keys"
+          },
+          "object_relationships": [
+            {
+              "name": "user",
+              "using": {
+                "foreign_key_constraint_on": "user_id"
+              }
+            },
+            {
+              "name": "user_role",
+              "using": {
+                "foreign_key_constraint_on": "role_id"
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "command_parameters"
+          },
+          "object_relationships": [
+            {
+              "name": "command",
+              "using": {
+                "foreign_key_constraint_on": "command_id"
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "help",
+                  "required",
+                  "position",
+                  "values",
+                  "command_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "required",
+                  "command_id",
+                  "id",
+                  "position",
+                  "help",
+                  "name",
+                  "values"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "commands"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            },
+            {
+              "name": "module",
+              "using": {
+                "foreign_key_constraint_on": "module_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "command_parameters",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "command_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "command_parameters"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "description",
+                  "help",
+                  "mitre_reference",
+                  "opsec_safe",
+                  "artifacts",
+                  "module_id",
+                  "agent_type_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "opsec_safe",
+                  "agent_type_id",
+                  "id",
+                  "module_id",
+                  "artifacts",
+                  "description",
+                  "help",
+                  "mitre_reference",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "console_messages"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            },
+            {
+              "name": "user",
+              "using": {
+                "foreign_key_constraint_on": "user_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "agent_tasks",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "console_message_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_tasks"
+                  }
+                }
+              }
+            }
+          ],
+          "insert_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "check": {},
+                "set": {
+                  "user_id": "x-hasura-user-id"
+                },
+                "columns": [
+                  "id",
+                  "agent_id",
+                  "user_id",
+                  "agent_task_id",
+                  "type",
+                  "content",
+                  "display",
+                  "received"
+                ]
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "agent_id",
+                  "user_id",
+                  "agent_task_id",
+                  "type",
+                  "content",
+                  "display",
+                  "received"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "agent_task_id",
+                  "id",
+                  "display",
+                  "type",
+                  "received",
+                  "user_id",
+                  "content"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "error_messages"
+          },
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "source",
+                  "message",
+                  "details",
+                  "timestamp"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "timestamp",
+                  "details",
+                  "message",
+                  "source"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "faction_files"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            },
+            {
+              "name": "user",
+              "using": {
+                "foreign_key_constraint_on": "user_id"
+              }
+            }
+          ],
+          "insert_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "check": {},
+                "set": {
+                  "user_id": "x-hasura-user-id"
+                },
+                "columns": [
+                  "id",
+                  "name",
+                  "hash",
+                  "hash_match",
+                  "agent_id",
+                  "user_id",
+                  "created",
+                  "last_downloaded",
+                  "visible"
+                ]
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "hash",
+                  "hash_match",
+                  "agent_id",
+                  "user_id",
+                  "created",
+                  "last_downloaded",
+                  "visible"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "hash_match",
+                  "visible",
+                  "agent_id",
+                  "id",
+                  "created",
+                  "last_downloaded",
+                  "user_id",
+                  "hash",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "visible"
+                ],
+                "filter": {},
+                "check": null
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "iocs"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_task_update",
+              "using": {
+                "foreign_key_constraint_on": "agent_task_update_id"
+              }
+            },
+            {
+              "name": "user",
+              "using": {
+                "foreign_key_constraint_on": "user_id"
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "description",
+                  "type",
+                  "identifier",
+                  "hash",
+                  "action",
+                  "agent_task_update_id",
+                  "user_id",
+                  "timestamp"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "description",
+                  "type",
+                  "identifier",
+                  "hash",
+                  "action",
+                  "agent_task_update_id",
+                  "user_id",
+                  "timestamp"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "languages"
+          },
+          "array_relationships": [
+            {
+              "name": "agent_types",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "language_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_types"
+                  }
+                }
+              }
+            },
+            {
+              "name": "modules",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "language_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "modules"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "modules"
+          },
+          "object_relationships": [
+            {
+              "name": "language",
+              "using": {
+                "foreign_key_constraint_on": "language_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "agent_modules_xrefs",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "module_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_modules_xref"
+                  }
+                }
+              }
+            },
+            {
+              "name": "commands",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "module_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "commands"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "description",
+                  "authors",
+                  "build_command",
+                  "build_location",
+                  "language_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "language_id",
+                  "description",
+                  "authors",
+                  "build_command",
+                  "build_location",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "payloads"
+          },
+          "object_relationships": [
+            {
+              "name": "agent_type",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_id"
+              }
+            },
+            {
+              "name": "agent_type_architecture",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_architecture_id"
+              }
+            },
+            {
+              "name": "agent_type_configuration",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_configuration_id"
+              }
+            },
+            {
+              "name": "agent_type_format",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_format_id"
+              }
+            },
+            {
+              "name": "agent_type_operating_system",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_operating_system_id"
+              }
+            },
+            {
+              "name": "agent_type_version",
+              "using": {
+                "foreign_key_constraint_on": "agent_type_version_id"
+              }
+            },
+            {
+              "name": "transport",
+              "using": {
+                "foreign_key_constraint_on": "transport_id"
+              }
+            },
+            {
+              "name": "user",
+              "using": {
+                "foreign_key_constraint_on": "created_by"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "agents",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "payload_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agents"
+                  }
+                }
+              }
+            },
+            {
+              "name": "staging_messages",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "payload_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "staging_messages"
+                  }
+                }
+              }
+            }
+          ],
+          "insert_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "check": {},
+                "set": {
+                  "created_by": "x-hasura-user-id"
+                },
+                "columns": [
+                  "id",
+                  "name",
+                  "description",
+                  "agent_type_id",
+                  "agent_transport_type_id",
+                  "transport_id",
+                  "language_id",
+                  "filename",
+                  "built",
+                  "staging_key",
+                  "beacon_interval",
+                  "jitter",
+                  "agent_type_operating_system_id",
+                  "agent_type_architecture_id",
+                  "agent_type_version_id",
+                  "agent_type_format_id",
+                  "agent_type_configuration_id",
+                  "debug",
+                  "created",
+                  "last_downloaded",
+                  "expiration_date",
+                  "visible",
+                  "enabled"
+                ]
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "description",
+                  "agent_type_id",
+                  "agent_transport_type_id",
+                  "transport_id",
+                  "language_id",
+                  "filename",
+                  "built",
+                  "staging_key",
+                  "beacon_interval",
+                  "jitter",
+                  "agent_type_operating_system_id",
+                  "agent_type_architecture_id",
+                  "agent_type_version_id",
+                  "agent_type_format_id",
+                  "agent_type_configuration_id",
+                  "debug",
+                  "created",
+                  "last_downloaded",
+                  "expiration_date",
+                  "visible",
+                  "enabled"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "built",
+                  "debug",
+                  "enabled",
+                  "visible",
+                  "jitter",
+                  "agent_transport_type_id",
+                  "agent_type_architecture_id",
+                  "agent_type_configuration_id",
+                  "agent_type_format_id",
+                  "agent_type_id",
+                  "agent_type_operating_system_id",
+                  "agent_type_version_id",
+                  "beacon_interval",
+                  "id",
+                  "language_id",
+                  "transport_id",
+                  "description",
+                  "staging_key",
+                  "created",
+                  "expiration_date",
+                  "last_downloaded",
+                  "filename",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "beacon_interval",
+                  "description",
+                  "enabled",
+                  "expiration_date",
+                  "jitter",
+                  "visible"
+                ],
+                "filter": {},
+                "check": null
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "staging_messages"
+          },
+          "object_relationships": [
+            {
+              "name": "payload",
+              "using": {
+                "foreign_key_constraint_on": "payload_id"
+              }
+            },
+            {
+              "name": "staging_response",
+              "using": {
+                "foreign_key_constraint_on": "staging_response_id"
+              }
+            },
+            {
+              "name": "transport",
+              "using": {
+                "foreign_key_constraint_on": "transport_id"
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "agent_name",
+                  "payload_id",
+                  "source_ip",
+                  "transport_id",
+                  "payload_name",
+                  "staging_id",
+                  "staging_response_id",
+                  "iv",
+                  "hmac",
+                  "message",
+                  "received"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "payload_id",
+                  "staging_response_id",
+                  "transport_id",
+                  "agent_name",
+                  "hmac",
+                  "iv",
+                  "payload_name",
+                  "source_ip",
+                  "staging_id",
+                  "received",
+                  "message"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "staging_responses"
+          },
+          "object_relationships": [
+            {
+              "name": "agent",
+              "using": {
+                "foreign_key_constraint_on": "agent_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "staging_messages",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "staging_response_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "staging_messages"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "agent_id",
+                  "staging_message_id",
+                  "iv",
+                  "hmac",
+                  "message",
+                  "created",
+                  "sent"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "sent",
+                  "agent_id",
+                  "id",
+                  "staging_message_id",
+                  "hmac",
+                  "iv",
+                  "created",
+                  "message"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "transports"
+          },
+          "array_relationships": [
+            {
+              "name": "agent_checkins",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "transport_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_checkins"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agents",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "transport_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agents"
+                  }
+                }
+              }
+            },
+            {
+              "name": "agent_transports_xrefs",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "transport_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "agent_transports_xref"
+                  }
+                }
+              }
+            },
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "transport_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            },
+            {
+              "name": "staging_messages",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "transport_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "staging_messages"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name",
+                  "transport_type",
+                  "guid",
+                  "configuration",
+                  "created",
+                  "last_checkin",
+                  "enabled",
+                  "visible"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "id",
+                  "configuration",
+                  "created",
+                  "last_checkin",
+                  "guid",
+                  "name",
+                  "transport_type"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "transport",
+              "permission": {
+                "columns": [
+                  "configuration",
+                  "created",
+                  "enabled",
+                  "guid",
+                  "last_checkin",
+                  "name",
+                  "transport_type",
+                  "visible"
+                ],
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "check": null
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "user_roles"
+          },
+          "array_relationships": [
+            {
+              "name": "api_keys",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "role_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "api_keys"
+                  }
+                }
+              }
+            },
+            {
+              "name": "users",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "role_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "users"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "name"
+                ],
+                "filter": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "users"
+          },
+          "object_relationships": [
+            {
+              "name": "user_role",
+              "using": {
+                "foreign_key_constraint_on": "role_id"
+              }
+            }
+          ],
+          "array_relationships": [
+            {
+              "name": "api_keys",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "user_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "api_keys"
+                  }
+                }
+              }
+            },
+            {
+              "name": "console_messages",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "user_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "console_messages"
+                  }
+                }
+              }
+            },
+            {
+              "name": "faction_files",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "user_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "faction_files"
+                  }
+                }
+              }
+            },
+            {
+              "name": "iocs",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "user_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "iocs"
+                  }
+                }
+              }
+            },
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "created_by",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "created",
+                  "enabled",
+                  "id",
+                  "last_login",
+                  "role_id",
+                  "username",
+                  "visible"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "read_only",
+              "permission": {
+                "columns": [
+                  "created",
+                  "enabled",
+                  "id",
+                  "last_login",
+                  "role_id",
+                  "username",
+                  "visible"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "operator",
+              "permission": {
+                "columns": [
+                  "password"
+                ],
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "check": null
+              }
+            }
+          ]
+        }
+      ]
+    }

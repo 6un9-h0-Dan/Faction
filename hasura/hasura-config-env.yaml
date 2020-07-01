@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hasura-config-env
+  labels:
+    app: faction-hasura
+data:
+  HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:elNDGLavd37Jp01jdv0WaRdaE0HvjXdcJJBsUVAVp2ICu9lpdbHfV9Zuc_uMbpd1LCbDhJmXzloNqkcqQ2oxmw@postgres:5432/faction"
+  HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+  HASURA_GRAPHQL_ADMIN_SECRET: "admin"
+  HASURA_GRAPHQL_AUTH_HOOK: "http://faction-auth/verify/hasura/"
+  HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
+  HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: "/srv/console-assets"

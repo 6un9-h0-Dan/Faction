@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: faction-hasura
+  labels:
+    app: faction-hasura
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+  selector:
+    app: faction-hasura
