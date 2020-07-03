@@ -17,6 +17,17 @@ spec:
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 8080
+          env:
+            - name: HASURA_GRAPHQL_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: db-url
+                  name: db-secrets
+            - name: HASURA_GRAPHQL_ADMIN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: admin-secret
+                  name: hasura-secrets
           envFrom:
             - configMapRef:
                 name: hasura-config-env
