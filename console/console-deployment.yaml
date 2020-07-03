@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faction-console
+spec:
+  selector:
+    matchLabels:
+      app: faction-console
+  template:
+    metadata:
+      labels:
+        app: faction-console
+    spec:
+      containers:
+        - name: faction-console
+          image: faction/console:v0.4.2-alpha
+          ports:
+            - containerPort: 443
+          envFrom:
+            - configMapRef:
+                name: console-config-env
+          volumeMounts:
+            - mountPath: /etc/nginx/ssl
+              name: console-certs
+            - mountPath: /etc/nginx/conf.d
+              name: console-config
+      volumes:
+        - name: console-certs
+          secret:
+            secretName: console-ssl-keys
+        - name: console-config
+          configMap:
+            name: console-config-nginx

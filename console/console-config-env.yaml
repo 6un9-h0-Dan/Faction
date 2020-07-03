@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: console-config-env
+  labels:
+    app: faction-console
+data:
+  VUE_APP_ROUTER_MODE: "history"
+  VUE_APP_API_ENDPOINT: "/api/v1"
+  VUE_APP_SOCKETIO_ENDPOINT: "/"
