@@ -7,6 +7,6 @@ metadata:
 data:
   HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
   HASURA_GRAPHQL_ADMIN_SECRET: "admin"
-  HASURA_GRAPHQL_AUTH_HOOK: "http://faction-auth/verify/hasura/"
+  HASURA_GRAPHQL_AUTH_HOOK: "http://faction-auth:5000/verify/hasura/"
   HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
   HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: "/srv/console-assets"

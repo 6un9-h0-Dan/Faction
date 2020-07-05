@@ -1,0 +1,37 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+metadata:
+  name: faction
+build:
+  artifacts:
+    - image: faction/auth
+      context: ../auth-service
+    - image: faction/console
+      context: ../console
+deploy:
+  kubectl:
+    manifests:
+      - ../auth-service/kubernetes/auth-deployment.yaml
+      - ../auth-service/kubernetes/auth-secrets.yaml
+      - ../auth-service/kubernetes/auth-service.yaml
+      - ../console/kubernetes/console-config-env.yaml
+      - ../console/kubernetes/console-config-nginx.yaml
+      - ../console/kubernetes/console-deployment.yaml
+      - ../console/kubernetes/console-secrets.yaml
+      - ../console/kubernetes/console-service.yaml
+      - ./hasura/hasura-config-env.yaml
+      - ./hasura/hasura-config-init.yaml
+      - ./hasura/hasura-deployment.yaml
+      - ./hasura/hasura-secrets.yaml
+      - ./hasura/hasura-service.yaml
+      - ./postgres/db-secrets.yaml
+      - ./postgres/postgres-config-env.yaml
+      - ./postgres/postgres-config-init.yaml
+      - ./postgres/postgres-deployment.yaml
+      - ./postgres/postgres-service.yaml
+      - ./postgres/postgres-storage.yaml
+portForward:
+  - resourceType: deployment
+    resourceName: faction-console
+    port: 443
+    localPort: 8443
