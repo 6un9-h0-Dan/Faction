@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: faction-auth
+  namespace: default
+spec:
+  rules:
+    - host: www.faction.localhost
+      http:
+        paths:
+          - backend:
+              serviceName: faction-auth
+              servicePort: 5000
+            path: /api/v1/auth/(.*)
