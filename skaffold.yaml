@@ -30,8 +30,5 @@ deploy:
       - ./postgres/postgres-deployment.yaml
       - ./postgres/postgres-service.yaml
       - ./postgres/postgres-storage.yaml
-      - ./ingress/auth-ingress.yaml
       - ./ingress/faction-ingress.yaml
-      - ./ingress/hasura-ingress.yaml
-      - ./ingress/ingress-service.yaml
       - ./ingress/metal-loadbalancer.yaml
