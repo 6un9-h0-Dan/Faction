@@ -24,7 +24,7 @@ data:
 
         /*
             Functions
-            */
+         */
         CREATE OR REPLACE FUNCTION random_range(INTEGER, INTEGER)
             RETURNS INTEGER
             LANGUAGE SQL
@@ -56,7 +56,7 @@ data:
         /*
             Agents are the result of running a payload on an endpoint. They have connected, staged
             and we can interact with them.
-            */
+         */
         CREATE TABLE public.agents (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             staging_id uuid,
@@ -81,7 +81,7 @@ data:
 
         /*
             This xref provides a mapping between an agent and what modules it has loaded
-            */
+         */
         CREATE TABLE public.agent_modules_xref (
             agent_id uuid NOT NULL,
             module_id uuid NOT NULL,
@@ -92,7 +92,7 @@ data:
         /*
             Agent Checkins are messages from an agent to Faction. These checkins may contain
             the results of tasks (agent_task_update) that have been issued, or it they may be empty. 
-            */
+         */
         CREATE TABLE public.agent_checkins (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             agent_id uuid,
@@ -107,19 +107,18 @@ data:
         /*
             Agent Tasks are commands issues to the agent. These are encypted as agent task messages
             and sent to the agent.
-            */
+         */
         CREATE TABLE public.agent_tasks (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             agent_id uuid NOT NULL,
             console_message_id uuid,
-            action text,
             command text,
             created timestamp without time zone default (now() at time zone 'utc') NOT NULL
         );
 
         /*
             Agent Messages are encrypted messages sent from Faction to an Agent. They should always be associated with a task
-            */
+         */
         CREATE TABLE public.agent_messages (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             agent_task_id uuid NOT NULL,
@@ -135,7 +134,7 @@ data:
             Agent Task Updates are are the results of a task (hopefully thats obvious). An agent task update
             does not nessesarily mean that the task has completed. We need to account for long running tasks 
             that result in multiple updates (Scan at 10%, Scan at 80%, Scan Complete.)
-            */
+         */
         CREATE TABLE public.agent_task_updates (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             agent_id uuid NOT NULL,
@@ -152,14 +151,23 @@ data:
 
         /*
             Agent Types are the types of agents available in Faction. When an agent type is added it needs
-            to provide a name, whether its in development (so we can adjust some processes) and it needs to 
-            tell us what module types it supports.
-            */
+            to tell us:
+
+            - Its Name
+            - What module types it supports
+            - Whether its in developement (this affects some staging settings)
+            - How to exchange the key used to encrypt messages (Options: AES256-CBC, RSA-JSON, RSA-XML)
+            - How to encrypt messages (same options as key exchange)
+            - Whether its stores tasks as a base64 string or not (this allows agents to use a byte based message format)
+        */
         CREATE TABLE public.agent_types (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             name text UNIQUE,
             authors text[],
             development boolean NOT NULL,
+            key_exchange_method text,
+            message_encryption_method text,
+            tasks_stored_as_base64 boolean DEFAULT false NOT NULL,
             module_types text[]
         );
 
@@ -167,7 +175,7 @@ data:
             API Keys are the primary way of authenticating to Faction. A user sends their user/pass to the Auth service,
             the Auth service issues an API key for them to use. API keys, like passwords are stored with encrypted with 
             bcrypt. There is no way to recover the plain text API key after its been created
-            */
+         */
         CREATE TABLE public.api_keys (
             id uuid DEFAULT public.gen_random_uuid()  PRIMARY KEY,
             user_id uuid NOT NULL,
@@ -185,7 +193,7 @@ data:
             Commands are associated with agent types (builtin) or modules. When an agent type or module is created
             it adds whatever commands it provides to the database. This is used for autocomplete info as well as preventing
             invalid commands from being sent down to agents.
-            */
+         */
         CREATE TABLE public.commands (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             name text,
@@ -214,7 +222,7 @@ data:
             Console Messages are what is displayed on the console for end users. This includes input from a user as well
             as system messages and messages from agents. Console message always need to be associated with an agent, as 
             thats what our console is "looking" at.
-            */
+         */
         CREATE TABLE public.console_messages (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             agent_id uuid NOT NULL,
@@ -227,7 +235,7 @@ data:
 
         /*
             Error Messages
-            */
+         */
         CREATE TABLE public.error_messages (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             source text,
@@ -247,7 +255,7 @@ data:
             - Public Key: If a file is made publically available (as in, you don't need to log in to Faction to download it)
             this field is used to store a key used to retrieve the file. If it is null, then you must auth to Faction to download it
             - URL: Where to download the file from. 
-            */
+         */
         CREATE TABLE public.files (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             description text,
@@ -266,7 +274,7 @@ data:
 
         /*
             IOCs
-            */
+         */
         CREATE TABLE public.iocs (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             description text,
@@ -282,7 +290,7 @@ data:
 
         /*
             Modules are binaries that provide commands and functionality to an agent.
-            */
+         */
         CREATE TABLE public.modules (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             name text,
@@ -293,17 +301,20 @@ data:
         );
 
         /*
-            Payload Types are created by Relays. They dictate what payloads can be created. Of note is the
+            Payload Types are created by Agent Types. They dictate what payloads can be created. Of note is the
             configuration_schema field which stores a json blob that defines what configuration options are available
             for this payload type. This can include things like OS, Architecture, etc. The Faction UI will render this
             schema as a form when the user goes to create their payload. 
+
+            Each payload type is associated with a type of relay through the relay_guid field
         */
 
         CREATE TABLE public.payload_type (    
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             name text,
             description text,
-            relay_id uuid NOT NULL,
+            agent_type_id uuid NOT NULL,
+            relay_guid uuid NOT NULL,
             configuration_schema json
         )
 
@@ -312,15 +323,18 @@ data:
             goes through a staging process, and then registers as an agent.
 
             Of note here is the configuration field which stores the values rendered from the configuration_schema
-            on the payload_type object.
-            */
+            on the payload_type object. When a new payload entry is created, the payload configuration as well as
+            the configuration for its associated relay are sent to a build service. The build service parses this 
+            information, builds the payload, uploads it to the file service, then updates the payload entry with 
+            the file id.
+         */
         CREATE TABLE public.payloads (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             payload_type_id uuid NOT NULL,
+            relay_id uuid NOT NULL,
             name text DEFAULT public.random_text(12),
             description text,
             staging_key text,
-            built boolean DEFAULT false NOT NULL,
             last_downloaded timestamp without time zone,
             expiration_date timestamp without time zone,
             configuration json,
@@ -333,7 +347,7 @@ data:
         /*
             Staging Messages are the initial message a payload sends when it reaches out to Faction. Faction responds to
             this message with the information required to establish an agent (a new encryption key, etc)
-            */
+         */
         CREATE TABLE public.staging_messages (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             payload_id uuid NOT NULL,
@@ -360,22 +374,29 @@ data:
 
         /*
             Relays serve as the point of contact for an agent. They sit between Faction and the agent and handle
-            transposing messages as appropriate.
-            */
+            transposing messages as appropriate. Each relay has a unique guid to identify it by, this way when a
+            payload type is created, it can list what relay type it supports
+
+            Relays have their own configuration that is sent along when a payload build is request. This is expected
+            to be configuration that shapes how its traffic is handled (for example, what HTTP headers the client 
+            should add, where to put messages and stuff)
+         */
         CREATE TABLE public.relays (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
-            agent_type_id uuid NOT NULL,
+            relay_guid uuid NOT NULL,
             name text,
             protocol text,
+            configuration json,
             created timestamp without time zone default (now() at time zone 'utc'),
-            last_checkin timestamp without time zone,
             enabled boolean DEFAULT true NOT NULL,
             visible boolean DEFAULT true NOT NULL
         );
 
+
+
         /*
             Users
-            */
+         */
         CREATE TABLE public.user_roles (
             id uuid DEFAULT public.gen_random_uuid() AS IDENTITY PRIMARY KEY,
             name text NOT NULL
@@ -395,7 +416,7 @@ data:
 
         /*
             Foreign Keys
-            */
+         */
         ALTER TABLE ONLY public.agents
             ADD CONSTRAINT agent_agent_type_id_fkey
                 FOREIGN KEY (agent_type_id) REFERENCES public.agent_types(id) ON DELETE RESTRICT;
@@ -485,6 +506,10 @@ data:
                 FOREIGN KEY (relay_id) REFERENCES public.relays(id) ON DELETE RESTRICT;
 
         ALTER TABLE ONLY public.payloads
+            ADD CONSTRAINT payload_agent_type_id_fkey
+                FOREIGN KEY (agent_type_id) REFERENCES public.agent_types(id) ON DELETE RESTRICT;
+
+        ALTER TABLE ONLY public.payloads
             ADD CONSTRAINT payloads_created_by_fkey
                 FOREIGN KEY (created_by) REFERENCES public.users(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
@@ -509,7 +534,7 @@ data:
                 FOREIGN KEY (role_id) REFERENCES public.user_roles(id) ON DELETE RESTRICT;
         /*
             Indexes
-            */
+         */
         CREATE UNIQUE INDEX agent_name_uindex ON public.agents USING btree (name);
         CREATE UNIQUE INDEX agent_task_name_uindex ON public.agent_tasks USING btree (name);
         CREATE UNIQUE INDEX api_keys_id_uindex ON public.api_keys USING btree (id);
