@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ingress
-  namespace: ingress
+  namespace: factionc2
 spec:
   externalTrafficPolicy: Local
   type: LoadBalancer

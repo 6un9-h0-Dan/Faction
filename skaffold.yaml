@@ -1,7 +1,7 @@
 apiVersion: skaffold/v2beta5
 kind: Config
 metadata:
-  name: faction
+  name: factionc2
 build:
   artifacts:
     - image: faction/auth
@@ -11,6 +11,7 @@ build:
 deploy:
   kubectl:
     manifests:
+      - ./faction/faction-namespace.yaml
       - ../auth-service/kubernetes/auth-deployment.yaml
       - ../auth-service/kubernetes/auth-secrets.yaml
       - ../auth-service/kubernetes/auth-service.yaml

@@ -9,7 +9,7 @@ metadata:
     nginx.org/websocket-services: "faction-hasura"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
   name: faction-ingress
-  namespace: default
+  namespace: factionc2
 spec:
   rules:
     - host: www.faction.localhost

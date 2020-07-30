@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: hasura-config-init
+  namespace: factionc2
   labels:
     app: faction-hasura
 data:
@@ -342,6 +343,20 @@ data:
               "name": "agent_type",
               "using": {
                 "foreign_key_constraint_on": "agent_type_id"
+              }
+            },
+            {
+              "name": "available_transports",
+              "using": {
+                "manual_configuration": {
+                  "remote_table": {
+                    "schema": "public",
+                    "name": "transports"
+                  },
+                  "column_mapping": {
+                    "transport_type_guid": "guid"
+                  }
+                }
               }
             }
           ],
