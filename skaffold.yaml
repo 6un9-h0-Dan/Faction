@@ -8,6 +8,8 @@ build:
       context: ../auth-service
     - image: faction/console
       context: ../console
+    - image: faction/fileserver
+      context: ../file-service
 deploy:
   kubectl:
     manifests:
@@ -20,6 +22,9 @@ deploy:
       - ../console/kubernetes/console-deployment.yaml
       - ../console/kubernetes/console-secrets.yaml
       - ../console/kubernetes/console-service.yaml
+      - ../file-service/kubernetes/file-service-deployment.yaml
+      - ../file-service/kubernetes/file-service.yaml
+      - ../file-service/kubernetes/file-service-storage.yaml
       - ./hasura/hasura-config-env.yaml
       - ./hasura/hasura-config-init.yaml
       - ./hasura/hasura-deployment.yaml
