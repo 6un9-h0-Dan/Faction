@@ -14,6 +14,19 @@ deploy:
   kubectl:
     manifests:
       - ./faction/faction-namespace.yaml
+      - ./hasura/hasura-config-env.yaml
+      - ./hasura/hasura-config-init.yaml
+      - ./hasura/hasura-deployment.yaml
+      - ./hasura/hasura-secrets.yaml
+      - ./hasura/hasura-service.yaml
+      - ./postgres/db-secrets.yaml
+      - ./postgres/postgres-storage.yaml
+      - ./postgres/postgres-config-env.yaml
+      - ./postgres/postgres-config-init.yaml
+      - ./postgres/postgres-deployment.yaml
+      - ./postgres/postgres-service.yaml
+      - ./ingress/faction-ingress.yaml
+      - ./ingress/metal-loadbalancer.yaml
       - ../auth-service/kubernetes/auth-deployment.yaml
       - ../auth-service/kubernetes/auth-secrets.yaml
       - ../auth-service/kubernetes/auth-service.yaml
@@ -22,19 +35,6 @@ deploy:
       - ../console/kubernetes/console-deployment.yaml
       - ../console/kubernetes/console-secrets.yaml
       - ../console/kubernetes/console-service.yaml
+      - ../file-service/kubernetes/file-service-storage.yaml
       - ../file-service/kubernetes/file-service-deployment.yaml
       - ../file-service/kubernetes/file-service.yaml
-      - ../file-service/kubernetes/file-service-storage.yaml
-      - ./hasura/hasura-config-env.yaml
-      - ./hasura/hasura-config-init.yaml
-      - ./hasura/hasura-deployment.yaml
-      - ./hasura/hasura-secrets.yaml
-      - ./hasura/hasura-service.yaml
-      - ./postgres/db-secrets.yaml
-      - ./postgres/postgres-config-env.yaml
-      - ./postgres/postgres-config-init.yaml
-      - ./postgres/postgres-deployment.yaml
-      - ./postgres/postgres-service.yaml
-      - ./postgres/postgres-storage.yaml
-      - ./ingress/faction-ingress.yaml
-      - ./ingress/metal-loadbalancer.yaml

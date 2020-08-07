@@ -13,7 +13,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/mnt/factiondb"
+    path: "/mnt/faction/db"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

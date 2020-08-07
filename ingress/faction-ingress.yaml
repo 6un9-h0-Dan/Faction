@@ -27,3 +27,7 @@ spec:
             backend:
               serviceName: faction-hasura
               servicePort: 8080
+          - path: /api/v1/files/(.*)
+            backend:
+              serviceName: faction-files
+              servicePort: 5000
