@@ -31,56 +31,129 @@ data:
           ],
           "insert_permissions": [
             {
-              "role": "agent",
+              "role": "service",
               "permission": {
                 "check": {},
                 "columns": [
-                  "agent_id",
-                  "id",
-                  "transport_id",
+                  "metadata",
                   "hmac",
                   "iv",
+                  "message",
                   "source_ip",
                   "received",
-                  "message"
-                ]
+                  "agent_id",
+                  "id",
+                  "transport_id"
+                ],
+                "backend_only": false
               }
             },
             {
               "role": "transport",
               "permission": {
                 "check": {},
-                "set": {
-                  "transport_id": "x-hasura-transport-id"
-                },
                 "columns": [
-                  "agent_id",
-                  "id",
-                  "transport_id",
+                  "metadata",
                   "hmac",
                   "iv",
+                  "message",
                   "source_ip",
                   "received",
-                  "message"
-                ]
+                  "agent_id",
+                  "id",
+                  "transport_id"
+                ],
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
                   "agent_id",
-                  "source_ip",
                   "transport_id",
+                  "source_ip",
                   "iv",
                   "hmac",
                   "message",
-                  "received"
+                  "received",
+                  "metadata"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "id",
+                  "agent_id",
+                  "transport_id",
+                  "source_ip",
+                  "iv",
+                  "hmac",
+                  "message",
+                  "received",
+                  "metadata"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "source_ip",
+                  "received",
+                  "agent_id",
+                  "id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "source_ip",
+                  "received",
+                  "agent_id",
+                  "id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "source_ip",
+                  "received",
+                  "agent_id",
+                  "id",
+                  "transport_id"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -104,79 +177,71 @@ data:
               }
             }
           ],
-          "select_permissions": [
+          "insert_permissions": [
             {
-              "role": "agent",
+              "role": "service",
               "permission": {
+                "check": {},
                 "columns": [
                   "agent_id",
                   "module_id"
                 ],
-                "filter": {}
-              }
-            },
-            {
-              "role": "read_only",
-              "permission": {
-                "columns": [
-                  "agent_id",
-                  "module_id"
-                ],
-                "filter": {}
-              }
-            }
-          ]
-        },
-        {
-          "table": {
-            "schema": "public",
-            "name": "agent_task_messages"
-          },
-          "object_relationships": [
-            {
-              "name": "agent",
-              "using": {
-                "foreign_key_constraint_on": "agent_id"
-              }
-            },
-            {
-              "name": "agent_task",
-              "using": {
-                "foreign_key_constraint_on": "agent_task_id"
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
-                  "id",
                   "agent_id",
-                  "agent_task_id",
-                  "iv",
-                  "hmac",
-                  "message",
-                  "sent",
-                  "created"
+                  "module_id"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "sent",
                   "agent_id",
-                  "agent_task_id",
-                  "id",
-                  "hmac",
-                  "iv",
-                  "created",
-                  "message"
+                  "module_id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "module_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "module_id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "agent_id",
+                  "module_id"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -214,43 +279,145 @@ data:
               }
             }
           ],
-          "select_permissions": [
+          "insert_permissions": [
             {
-              "role": "operator",
+              "role": "service",
               "permission": {
-                "columns": [
-                  "complete",
-                  "success",
-                  "agent_id",
-                  "id",
-                  "task_id",
-                  "content",
-                  "content_id",
-                  "task_name",
-                  "type",
-                  "received",
-                  "message"
-                ],
-                "filter": {}
-              }
-            },
-            {
-              "role": "read_only",
-              "permission": {
+                "check": {},
                 "columns": [
                   "id",
                   "agent_id",
                   "task_id",
-                  "task_name",
                   "message",
                   "type",
                   "content",
                   "content_id",
                   "complete",
                   "success",
-                  "received"
+                  "received",
+                  "metadata"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "read-only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "agent_id",
+                  "task_id",
+                  "message",
+                  "type",
+                  "content",
+                  "content_id",
+                  "complete",
+                  "success",
+                  "received",
+                  "metadata"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "complete",
+                  "success",
+                  "metadata",
+                  "content",
+                  "content_id",
+                  "message",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "id",
+                  "task_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "complete",
+                  "success",
+                  "metadata",
+                  "content",
+                  "content_id",
+                  "message",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "id",
+                  "task_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "complete",
+                  "success",
+                  "metadata",
+                  "content",
+                  "content_id",
+                  "message",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "id",
+                  "task_id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "complete",
+                  "success",
+                  "metadata",
+                  "content",
+                  "content_id",
+                  "message",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "id",
+                  "task_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": null
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": null
               }
             }
           ]
@@ -276,18 +443,6 @@ data:
           ],
           "array_relationships": [
             {
-              "name": "agent_task_messages",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_task_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_task_messages"
-                  }
-                }
-              }
-            },
-            {
               "name": "agent_task_updates",
               "using": {
                 "foreign_key_constraint_on": {
@@ -300,395 +455,115 @@ data:
               }
             }
           ],
-          "select_permissions": [
+          "insert_permissions": [
             {
-              "role": "operator",
+              "role": "service",
               "permission": {
+                "check": {},
                 "columns": [
                   "id",
-                  "name",
                   "agent_id",
                   "console_message_id",
-                  "action",
                   "command",
-                  "created"
+                  "created",
+                  "metadata"
                 ],
-                "filter": {}
+                "backend_only": false
               }
-            },
+            }
+          ],
+          "select_permissions": [
             {
-              "role": "read_only",
+              "role": "read-only",
               "permission": {
                 "columns": [
+                  "id",
                   "agent_id",
                   "console_message_id",
-                  "id",
-                  "name",
+                  "command",
                   "created",
-                  "action",
-                  "command"
-                ],
-                "filter": {}
-              }
-            }
-          ]
-        },
-        {
-          "table": {
-            "schema": "public",
-            "name": "agent_transport_types"
-          },
-          "object_relationships": [
-            {
-              "name": "agent_type",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_id"
-              }
-            },
-            {
-              "name": "available_transports",
-              "using": {
-                "manual_configuration": {
-                  "remote_table": {
-                    "schema": "public",
-                    "name": "transports"
-                  },
-                  "column_mapping": {
-                    "transport_type_guid": "guid"
-                  }
-                }
-              }
-            }
-          ],
-          "select_permissions": [
-            {
-              "role": "operator",
-              "permission": {
-                "columns": [
-                  "id",
-                  "name",
-                  "agent_type_id",
-                  "transport_type_guid",
-                  "build_command",
-                  "build_location"
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "agent_type_id",
-                  "id",
-                  "build_location",
-                  "build_command",
-                  "name",
-                  "transport_type_guid"
-                ],
-                "filter": {}
-              }
-            }
-          ]
-        },
-        {
-          "table": {
-            "schema": "public",
-            "name": "agent_transports_xref"
-          },
-          "object_relationships": [
-            {
-              "name": "agent",
-              "using": {
-                "foreign_key_constraint_on": "agent_id"
-              }
-            },
-            {
-              "name": "transport",
-              "using": {
-                "foreign_key_constraint_on": "transport_id"
-              }
-            }
-          ],
-          "select_permissions": [
-            {
-              "role": "operator",
-              "permission": {
-                "columns": [
+                  "metadata",
+                  "command",
+                  "created",
                   "agent_id",
-                  "transport_id"
+                  "console_message_id",
+                  "id"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "super-user",
               "permission": {
                 "columns": [
+                  "metadata",
+                  "command",
+                  "created",
                   "agent_id",
-                  "transport_id"
-                ],
-                "filter": {}
-              }
-            }
-          ]
-        },
-        {
-          "table": {
-            "schema": "public",
-            "name": "agent_type_architectures"
-          },
-          "object_relationships": [
-            {
-              "name": "agent_type",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_id"
-              }
-            }
-          ],
-          "array_relationships": [
-            {
-              "name": "payloads",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_architecture_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "payloads"
-                  }
-                }
-              }
-            }
-          ],
-          "select_permissions": [
-            {
-              "role": "operator",
-              "permission": {
-                "columns": [
-                  "id",
-                  "name",
-                  "agent_type_id"
+                  "console_message_id",
+                  "id"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "user",
               "permission": {
                 "columns": [
-                  "agent_type_id",
-                  "id",
-                  "name"
+                  "metadata",
+                  "command",
+                  "created",
+                  "agent_id",
+                  "console_message_id",
+                  "id"
                 ],
                 "filter": {}
               }
             }
-          ]
-        },
-        {
-          "table": {
-            "schema": "public",
-            "name": "agent_type_configurations"
-          },
-          "object_relationships": [
-            {
-              "name": "agent_type",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_id"
-              }
-            }
           ],
-          "array_relationships": [
+          "update_permissions": [
             {
-              "name": "payloads",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_configuration_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "payloads"
-                  }
-                }
-              }
-            }
-          ],
-          "select_permissions": [
-            {
-              "role": "operator",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "id",
-                  "name",
-                  "agent_type_id"
+                  "metadata",
+                  "command",
+                  "created",
+                  "agent_id",
+                  "console_message_id",
+                  "id"
                 ],
-                "filter": {}
+                "filter": {},
+                "check": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "super-user",
               "permission": {
                 "columns": [
-                  "agent_type_id",
-                  "id",
-                  "name"
+                  "metadata"
                 ],
-                "filter": {}
-              }
-            }
-          ]
-        },
-        {
-          "table": {
-            "schema": "public",
-            "name": "agent_type_formats"
-          },
-          "object_relationships": [
-            {
-              "name": "agent_type",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_id"
-              }
-            }
-          ],
-          "array_relationships": [
-            {
-              "name": "payloads",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_format_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "payloads"
-                  }
-                }
-              }
-            }
-          ],
-          "select_permissions": [
-            {
-              "role": "operator",
-              "permission": {
-                "columns": [
-                  "id",
-                  "name",
-                  "agent_type_id"
-                ],
-                "filter": {}
+                "filter": {},
+                "check": null
               }
             },
             {
-              "role": "read_only",
+              "role": "user",
               "permission": {
                 "columns": [
-                  "agent_type_id",
-                  "id",
-                  "name"
+                  "metadata"
                 ],
-                "filter": {}
-              }
-            }
-          ]
-        },
-        {
-          "table": {
-            "schema": "public",
-            "name": "agent_type_operating_systems"
-          },
-          "object_relationships": [
-            {
-              "name": "agent_type",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_id"
-              }
-            }
-          ],
-          "array_relationships": [
-            {
-              "name": "payloads",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_operating_system_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "payloads"
-                  }
-                }
-              }
-            }
-          ],
-          "select_permissions": [
-            {
-              "role": "operator",
-              "permission": {
-                "columns": [
-                  "id",
-                  "name",
-                  "agent_type_id"
-                ],
-                "filter": {}
-              }
-            },
-            {
-              "role": "read_only",
-              "permission": {
-                "columns": [
-                  "agent_type_id",
-                  "id",
-                  "name"
-                ],
-                "filter": {}
-              }
-            }
-          ]
-        },
-        {
-          "table": {
-            "schema": "public",
-            "name": "agent_type_versions"
-          },
-          "object_relationships": [
-            {
-              "name": "agent_type",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_id"
-              }
-            }
-          ],
-          "array_relationships": [
-            {
-              "name": "payloads",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_version_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "payloads"
-                  }
-                }
-              }
-            }
-          ],
-          "select_permissions": [
-            {
-              "role": "operator",
-              "permission": {
-                "columns": [
-                  "id",
-                  "name",
-                  "agent_type_id"
-                ],
-                "filter": {}
-              }
-            },
-            {
-              "role": "read_only",
-              "permission": {
-                "columns": [
-                  "agent_type_id",
-                  "id",
-                  "name"
-                ],
-                "filter": {}
+                "filter": {},
+                "check": null
               }
             }
           ]
@@ -698,14 +573,6 @@ data:
             "schema": "public",
             "name": "agent_types"
           },
-          "object_relationships": [
-            {
-              "name": "language",
-              "using": {
-                "foreign_key_constraint_on": "language_id"
-              }
-            }
-          ],
           "array_relationships": [
             {
               "name": "agents",
@@ -715,78 +582,6 @@ data:
                   "table": {
                     "schema": "public",
                     "name": "agents"
-                  }
-                }
-              }
-            },
-            {
-              "name": "agent_transport_types",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_transport_types"
-                  }
-                }
-              }
-            },
-            {
-              "name": "agent_type_architectures",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_type_architectures"
-                  }
-                }
-              }
-            },
-            {
-              "name": "agent_type_configurations",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_type_configurations"
-                  }
-                }
-              }
-            },
-            {
-              "name": "agent_type_formats",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_type_formats"
-                  }
-                }
-              }
-            },
-            {
-              "name": "agent_type_operating_systems",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_type_operating_systems"
-                  }
-                }
-              }
-            },
-            {
-              "name": "agent_type_versions",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_type_versions"
                   }
                 }
               }
@@ -802,51 +597,117 @@ data:
                   }
                 }
               }
-            },
+            }
+          ],
+          "insert_permissions": [
             {
-              "name": "payloads",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_type_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "payloads"
-                  }
-                }
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "id",
+                  "name",
+                  "authors",
+                  "development",
+                  "module_types",
+                  "metadata"
+                ],
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
                   "name",
-                  "guid",
                   "authors",
-                  "language_id",
-                  "build_command",
-                  "build_location",
-                  "development"
+                  "development",
+                  "module_types",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
                   "development",
-                  "id",
-                  "language_id",
+                  "metadata",
                   "authors",
-                  "build_command",
-                  "build_location",
-                  "guid",
-                  "name"
+                  "module_types",
+                  "name",
+                  "id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "development",
+                  "metadata",
+                  "authors",
+                  "module_types",
+                  "name",
+                  "id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "development",
+                  "metadata",
+                  "authors",
+                  "module_types",
+                  "name",
+                  "id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "development",
+                  "metadata",
+                  "authors",
+                  "module_types",
+                  "name",
+                  "id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": null
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": null
               }
             }
           ]
@@ -867,12 +728,6 @@ data:
               "name": "payload",
               "using": {
                 "foreign_key_constraint_on": "payload_id"
-              }
-            },
-            {
-              "name": "transport",
-              "using": {
-                "foreign_key_constraint_on": "transport_id"
               }
             }
           ],
@@ -902,18 +757,6 @@ data:
               }
             },
             {
-              "name": "agent_task_messages",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_task_messages"
-                  }
-                }
-              }
-            },
-            {
               "name": "agent_tasks",
               "using": {
                 "foreign_key_constraint_on": {
@@ -938,18 +781,6 @@ data:
               }
             },
             {
-              "name": "agent_transports_xrefs",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "agent_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_transports_xref"
-                  }
-                }
-              }
-            },
-            {
               "name": "console_messages",
               "using": {
                 "foreign_key_constraint_on": {
@@ -962,13 +793,25 @@ data:
               }
             },
             {
-              "name": "faction_files",
+              "name": "files",
               "using": {
                 "foreign_key_constraint_on": {
                   "column": "agent_id",
                   "table": {
                     "schema": "public",
-                    "name": "faction_files"
+                    "name": "files"
+                  }
+                }
+              }
+            },
+            {
+              "name": "message_queues",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "agent_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "message_queue"
                   }
                 }
               }
@@ -986,9 +829,41 @@ data:
               }
             }
           ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "id",
+                  "agent_type_id",
+                  "staging_id",
+                  "name",
+                  "secret_key",
+                  "username",
+                  "hostname",
+                  "pid",
+                  "operating_system",
+                  "admin",
+                  "payload_id",
+                  "staging_response_id",
+                  "internal_ip",
+                  "external_ip",
+                  "initial_checkin",
+                  "last_checkin",
+                  "transport_id",
+                  "beacon_interval",
+                  "jitter",
+                  "visible",
+                  "metadata"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "admin",
@@ -1001,6 +876,7 @@ data:
                   "internal_ip",
                   "jitter",
                   "last_checkin",
+                  "metadata",
                   "name",
                   "operating_system",
                   "payload_id",
@@ -1015,7 +891,65 @@ data:
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "admin",
+                  "visible",
+                  "jitter",
+                  "beacon_interval",
+                  "pid",
+                  "metadata",
+                  "external_ip",
+                  "hostname",
+                  "internal_ip",
+                  "name",
+                  "operating_system",
+                  "secret_key",
+                  "username",
+                  "initial_checkin",
+                  "last_checkin",
+                  "agent_type_id",
+                  "id",
+                  "payload_id",
+                  "staging_id",
+                  "staging_response_id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "admin",
+                  "visible",
+                  "jitter",
+                  "beacon_interval",
+                  "pid",
+                  "metadata",
+                  "external_ip",
+                  "hostname",
+                  "internal_ip",
+                  "name",
+                  "operating_system",
+                  "secret_key",
+                  "username",
+                  "initial_checkin",
+                  "last_checkin",
+                  "agent_type_id",
+                  "id",
+                  "payload_id",
+                  "staging_id",
+                  "staging_response_id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
               "permission": {
                 "columns": [
                   "admin",
@@ -1028,6 +962,7 @@ data:
                   "internal_ip",
                   "jitter",
                   "last_checkin",
+                  "metadata",
                   "name",
                   "operating_system",
                   "payload_id",
@@ -1039,6 +974,60 @@ data:
                   "visible"
                 ],
                 "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "admin",
+                  "visible",
+                  "jitter",
+                  "beacon_interval",
+                  "pid",
+                  "metadata",
+                  "external_ip",
+                  "hostname",
+                  "internal_ip",
+                  "name",
+                  "operating_system",
+                  "secret_key",
+                  "username",
+                  "initial_checkin",
+                  "last_checkin",
+                  "agent_type_id",
+                  "id",
+                  "payload_id",
+                  "staging_id",
+                  "staging_response_id",
+                  "transport_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "visible"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "visible"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1061,6 +1050,168 @@ data:
                 "foreign_key_constraint_on": "role_id"
               }
             }
+          ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "id",
+                  "user_id",
+                  "role_id",
+                  "name",
+                  "description",
+                  "key",
+                  "created",
+                  "last_used",
+                  "enabled",
+                  "visible",
+                  "metadata"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "read-only",
+              "permission": {
+                "columns": [
+                  "id",
+                  "user_id",
+                  "role_id",
+                  "name",
+                  "description",
+                  "key",
+                  "created",
+                  "last_used",
+                  "enabled",
+                  "visible",
+                  "metadata"
+                ],
+                "filter": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                }
+              }
+            },
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "key",
+                  "metadata",
+                  "description",
+                  "name",
+                  "created",
+                  "last_used",
+                  "id",
+                  "role_id",
+                  "user_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "created",
+                  "description",
+                  "enabled",
+                  "id",
+                  "key",
+                  "last_used",
+                  "metadata",
+                  "name",
+                  "role_id",
+                  "user_id",
+                  "visible"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "key",
+                  "metadata",
+                  "description",
+                  "name",
+                  "created",
+                  "last_used",
+                  "id",
+                  "role_id",
+                  "user_id"
+                ],
+                "filter": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                }
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "key",
+                  "metadata",
+                  "description",
+                  "name",
+                  "created",
+                  "last_used",
+                  "id",
+                  "role_id",
+                  "user_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "metadata",
+                  "visible"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "metadata",
+                  "visible"
+                ],
+                "filter": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "check": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                }
+              }
+            }
           ]
         },
         {
@@ -1076,9 +1227,28 @@ data:
               }
             }
           ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "id",
+                  "name",
+                  "help",
+                  "required",
+                  "position",
+                  "values",
+                  "command_id",
+                  "metadata"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
@@ -1087,24 +1257,97 @@ data:
                   "required",
                   "position",
                   "values",
-                  "command_id"
+                  "command_id",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
                   "required",
-                  "command_id",
-                  "id",
                   "position",
+                  "metadata",
                   "help",
                   "name",
-                  "values"
+                  "values",
+                  "command_id",
+                  "id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "required",
+                  "position",
+                  "metadata",
+                  "help",
+                  "name",
+                  "values",
+                  "command_id",
+                  "id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "required",
+                  "position",
+                  "metadata",
+                  "help",
+                  "name",
+                  "values",
+                  "command_id",
+                  "id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "required",
+                  "position",
+                  "metadata",
+                  "help",
+                  "name",
+                  "values",
+                  "command_id",
+                  "id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": null
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": null
               }
             }
           ]
@@ -1142,9 +1385,30 @@ data:
               }
             }
           ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "id",
+                  "name",
+                  "description",
+                  "help",
+                  "mitre_reference",
+                  "opsec_safe",
+                  "artifacts",
+                  "module_id",
+                  "agent_type_id",
+                  "metadata"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
@@ -1155,26 +1419,105 @@ data:
                   "opsec_safe",
                   "artifacts",
                   "module_id",
-                  "agent_type_id"
+                  "agent_type_id",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
                   "opsec_safe",
-                  "agent_type_id",
-                  "id",
-                  "module_id",
+                  "metadata",
                   "artifacts",
                   "description",
                   "help",
                   "mitre_reference",
-                  "name"
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "module_id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "opsec_safe",
+                  "metadata",
+                  "artifacts",
+                  "description",
+                  "help",
+                  "mitre_reference",
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "module_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "opsec_safe",
+                  "metadata",
+                  "artifacts",
+                  "description",
+                  "help",
+                  "mitre_reference",
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "module_id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "opsec_safe",
+                  "metadata",
+                  "artifacts",
+                  "description",
+                  "help",
+                  "mitre_reference",
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "module_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": null
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1214,12 +1557,9 @@ data:
           ],
           "insert_permissions": [
             {
-              "role": "operator",
+              "role": "service",
               "permission": {
                 "check": {},
-                "set": {
-                  "user_id": "x-hasura-user-id"
-                },
                 "columns": [
                   "id",
                   "agent_id",
@@ -1227,15 +1567,50 @@ data:
                   "agent_task_id",
                   "type",
                   "content",
-                  "display",
-                  "received"
-                ]
+                  "received",
+                  "metadata"
+                ],
+                "backend_only": false
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "metadata",
+                  "content",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "agent_task_id",
+                  "id",
+                  "user_id"
+                ],
+                "backend_only": false
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "metadata",
+                  "content",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "agent_task_id",
+                  "id",
+                  "user_id"
+                ],
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
@@ -1244,26 +1619,97 @@ data:
                   "agent_task_id",
                   "type",
                   "content",
-                  "display",
-                  "received"
+                  "received",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
+                  "metadata",
+                  "content",
+                  "type",
+                  "received",
                   "agent_id",
                   "agent_task_id",
                   "id",
-                  "display",
-                  "type",
-                  "received",
-                  "user_id",
-                  "content"
+                  "user_id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "content",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "agent_task_id",
+                  "id",
+                  "user_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "content",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "agent_task_id",
+                  "id",
+                  "user_id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "content",
+                  "type",
+                  "received",
+                  "agent_id",
+                  "agent_task_id",
+                  "id",
+                  "user_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1273,31 +1719,115 @@ data:
             "schema": "public",
             "name": "error_messages"
           },
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "id",
+                  "source",
+                  "message",
+                  "details",
+                  "timestamp",
+                  "metadata"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
                   "source",
                   "message",
                   "details",
-                  "timestamp"
+                  "timestamp",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "id",
-                  "timestamp",
+                  "metadata",
                   "details",
                   "message",
-                  "source"
+                  "source",
+                  "timestamp",
+                  "id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "details",
+                  "message",
+                  "source",
+                  "timestamp",
+                  "id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "details",
+                  "message",
+                  "source",
+                  "timestamp",
+                  "id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "details",
+                  "message",
+                  "source",
+                  "timestamp",
+                  "id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1305,7 +1835,7 @@ data:
         {
           "table": {
             "schema": "public",
-            "name": "faction_files"
+            "name": "files"
           },
           "object_relationships": [
             {
@@ -1321,59 +1851,130 @@ data:
               }
             }
           ],
+          "array_relationships": [
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "file_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
           "insert_permissions": [
             {
-              "role": "operator",
+              "role": "service",
               "permission": {
                 "check": {},
-                "set": {
-                  "user_id": "x-hasura-user-id"
-                },
                 "columns": [
                   "id",
-                  "name",
+                  "description",
+                  "type",
                   "hash",
-                  "hash_match",
+                  "file_path",
                   "agent_id",
+                  "source_file_path",
                   "user_id",
                   "created",
                   "last_downloaded",
-                  "visible"
-                ]
+                  "visible",
+                  "public_key",
+                  "url",
+                  "metadata"
+                ],
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
-                  "name",
+                  "description",
+                  "type",
                   "hash",
-                  "hash_match",
+                  "file_path",
                   "agent_id",
+                  "source_file_path",
                   "user_id",
                   "created",
                   "last_downloaded",
-                  "visible"
+                  "visible",
+                  "public_key",
+                  "url",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "hash_match",
                   "visible",
-                  "agent_id",
-                  "id",
+                  "metadata",
+                  "description",
+                  "file_path",
+                  "hash",
+                  "public_key",
+                  "source_file_path",
+                  "type",
+                  "url",
                   "created",
                   "last_downloaded",
-                  "user_id",
+                  "agent_id",
+                  "id",
+                  "user_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "visible",
+                  "metadata",
+                  "description",
+                  "file_path",
                   "hash",
-                  "name"
+                  "public_key",
+                  "source_file_path",
+                  "type",
+                  "url",
+                  "created",
+                  "last_downloaded",
+                  "agent_id",
+                  "id",
+                  "user_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "visible",
+                  "metadata",
+                  "description",
+                  "file_path",
+                  "hash",
+                  "public_key",
+                  "source_file_path",
+                  "type",
+                  "url",
+                  "created",
+                  "last_downloaded",
+                  "agent_id",
+                  "id",
+                  "user_id"
                 ],
                 "filter": {}
               }
@@ -1381,13 +1982,48 @@ data:
           ],
           "update_permissions": [
             {
-              "role": "operator",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "visible"
+                  "visible",
+                  "metadata",
+                  "description",
+                  "file_path",
+                  "hash",
+                  "public_key",
+                  "source_file_path",
+                  "type",
+                  "url",
+                  "created",
+                  "last_downloaded",
+                  "agent_id",
+                  "id",
+                  "user_id"
                 ],
                 "filter": {},
                 "check": null
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "visible"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "visible"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1411,9 +2047,30 @@ data:
               }
             }
           ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "id",
+                  "description",
+                  "type",
+                  "identifier",
+                  "hash",
+                  "action",
+                  "agent_task_update_id",
+                  "user_id",
+                  "timestamp",
+                  "metadata"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
@@ -1424,13 +2081,14 @@ data:
                   "action",
                   "agent_task_update_id",
                   "user_id",
-                  "timestamp"
+                  "timestamp",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
                   "id",
@@ -1441,9 +2099,87 @@ data:
                   "action",
                   "agent_task_update_id",
                   "user_id",
-                  "timestamp"
+                  "timestamp",
+                  "metadata"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "action",
+                  "description",
+                  "hash",
+                  "identifier",
+                  "type",
+                  "timestamp",
+                  "agent_task_update_id",
+                  "id",
+                  "user_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "action",
+                  "description",
+                  "hash",
+                  "identifier",
+                  "type",
+                  "timestamp",
+                  "agent_task_update_id",
+                  "id",
+                  "user_id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "action",
+                  "description",
+                  "hash",
+                  "identifier",
+                  "type",
+                  "timestamp",
+                  "agent_task_update_id",
+                  "id",
+                  "user_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1451,53 +2187,149 @@ data:
         {
           "table": {
             "schema": "public",
-            "name": "languages"
+            "name": "message_queue"
           },
-          "array_relationships": [
+          "object_relationships": [
             {
-              "name": "agent_types",
+              "name": "agent",
               "using": {
-                "foreign_key_constraint_on": {
-                  "column": "language_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_types"
-                  }
-                }
+                "foreign_key_constraint_on": "agent_id"
               }
-            },
+            }
+          ],
+          "insert_permissions": [
             {
-              "name": "modules",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "language_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "modules"
-                  }
-                }
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "route_info",
+                  "created",
+                  "agent_id",
+                  "agent_task_id",
+                  "id"
+                ],
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
-                  "name"
+                  "agent_id",
+                  "agent_task_id",
+                  "route_info",
+                  "iv",
+                  "hmac",
+                  "message",
+                  "sent",
+                  "created",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "id",
-                  "name"
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "route_info",
+                  "created",
+                  "agent_id",
+                  "agent_task_id",
+                  "id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "route_info",
+                  "created",
+                  "agent_id",
+                  "agent_task_id",
+                  "id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "route_info",
+                  "created",
+                  "agent_id",
+                  "agent_task_id",
+                  "id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "route_info",
+                  "created",
+                  "agent_id",
+                  "agent_task_id",
+                  "id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1507,14 +2339,6 @@ data:
             "schema": "public",
             "name": "modules"
           },
-          "object_relationships": [
-            {
-              "name": "language",
-              "using": {
-                "foreign_key_constraint_on": "language_id"
-              }
-            }
-          ],
           "array_relationships": [
             {
               "name": "agent_modules_xrefs",
@@ -1541,35 +2365,253 @@ data:
               }
             }
           ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "metadata",
+                  "authors",
+                  "description",
+                  "module_type",
+                  "name",
+                  "id"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
                   "name",
                   "description",
                   "authors",
-                  "build_command",
-                  "build_location",
-                  "language_id"
+                  "module_type",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "authors",
+                  "description",
+                  "module_type",
+                  "name",
+                  "id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "authors",
+                  "description",
+                  "module_type",
+                  "name",
+                  "id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "authors",
+                  "description",
+                  "module_type",
+                  "name",
+                  "id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "authors",
+                  "description",
+                  "module_type",
+                  "name",
+                  "id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "payload_type"
+          },
+          "array_relationships": [
+            {
+              "name": "payloads",
+              "using": {
+                "foreign_key_constraint_on": {
+                  "column": "payload_type_id",
+                  "table": {
+                    "schema": "public",
+                    "name": "payloads"
+                  }
+                }
+              }
+            }
+          ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "configuration_schema",
+                  "metadata",
+                  "description",
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "transport_guid"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
-                  "language_id",
+                  "name",
                   "description",
-                  "authors",
-                  "build_command",
-                  "build_location",
-                  "name"
+                  "agent_type_id",
+                  "transport_guid",
+                  "metadata",
+                  "configuration_schema"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "configuration_schema",
+                  "metadata",
+                  "description",
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "transport_guid"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "configuration_schema",
+                  "metadata",
+                  "description",
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "transport_guid"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "configuration_schema",
+                  "metadata",
+                  "description",
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "transport_guid"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "configuration_schema",
+                  "metadata",
+                  "description",
+                  "name",
+                  "agent_type_id",
+                  "id",
+                  "transport_guid"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1581,39 +2623,15 @@ data:
           },
           "object_relationships": [
             {
-              "name": "agent_type",
+              "name": "file",
               "using": {
-                "foreign_key_constraint_on": "agent_type_id"
+                "foreign_key_constraint_on": "file_id"
               }
             },
             {
-              "name": "agent_type_architecture",
+              "name": "payload_type",
               "using": {
-                "foreign_key_constraint_on": "agent_type_architecture_id"
-              }
-            },
-            {
-              "name": "agent_type_configuration",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_configuration_id"
-              }
-            },
-            {
-              "name": "agent_type_format",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_format_id"
-              }
-            },
-            {
-              "name": "agent_type_operating_system",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_operating_system_id"
-              }
-            },
-            {
-              "name": "agent_type_version",
-              "using": {
-                "foreign_key_constraint_on": "agent_type_version_id"
+                "foreign_key_constraint_on": "payload_type_id"
               }
             },
             {
@@ -1657,99 +2675,119 @@ data:
           ],
           "insert_permissions": [
             {
-              "role": "operator",
+              "role": "service",
               "permission": {
                 "check": {},
-                "set": {
-                  "created_by": "x-hasura-user-id"
-                },
                 "columns": [
-                  "id",
-                  "name",
-                  "description",
-                  "agent_type_id",
-                  "agent_transport_type_id",
-                  "transport_id",
-                  "language_id",
-                  "filename",
-                  "built",
-                  "staging_key",
-                  "beacon_interval",
-                  "jitter",
-                  "agent_type_operating_system_id",
-                  "agent_type_architecture_id",
-                  "agent_type_version_id",
-                  "agent_type_format_id",
-                  "agent_type_configuration_id",
-                  "debug",
-                  "created",
-                  "last_downloaded",
-                  "expiration_date",
+                  "enabled",
                   "visible",
-                  "enabled"
-                ]
+                  "configuration",
+                  "metadata",
+                  "description",
+                  "name",
+                  "staging_key",
+                  "created",
+                  "expiration_date",
+                  "last_downloaded",
+                  "created_by",
+                  "file_id",
+                  "id",
+                  "payload_type_id",
+                  "transport_id"
+                ],
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
+                  "payload_type_id",
+                  "transport_id",
+                  "file_id",
                   "name",
                   "description",
-                  "agent_type_id",
-                  "agent_transport_type_id",
-                  "transport_id",
-                  "language_id",
-                  "filename",
-                  "built",
                   "staging_key",
-                  "beacon_interval",
-                  "jitter",
-                  "agent_type_operating_system_id",
-                  "agent_type_architecture_id",
-                  "agent_type_version_id",
-                  "agent_type_format_id",
-                  "agent_type_configuration_id",
-                  "debug",
-                  "created",
                   "last_downloaded",
                   "expiration_date",
+                  "configuration",
+                  "created",
                   "visible",
-                  "enabled"
+                  "enabled",
+                  "created_by",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "built",
-                  "debug",
                   "enabled",
                   "visible",
-                  "jitter",
-                  "agent_transport_type_id",
-                  "agent_type_architecture_id",
-                  "agent_type_configuration_id",
-                  "agent_type_format_id",
-                  "agent_type_id",
-                  "agent_type_operating_system_id",
-                  "agent_type_version_id",
-                  "beacon_interval",
-                  "id",
-                  "language_id",
-                  "transport_id",
+                  "configuration",
+                  "metadata",
                   "description",
+                  "name",
                   "staging_key",
                   "created",
                   "expiration_date",
                   "last_downloaded",
-                  "filename",
-                  "name"
+                  "created_by",
+                  "file_id",
+                  "id",
+                  "payload_type_id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "configuration",
+                  "metadata",
+                  "description",
+                  "name",
+                  "staging_key",
+                  "created",
+                  "expiration_date",
+                  "last_downloaded",
+                  "created_by",
+                  "file_id",
+                  "id",
+                  "payload_type_id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "configuration",
+                  "metadata",
+                  "description",
+                  "name",
+                  "staging_key",
+                  "created",
+                  "expiration_date",
+                  "last_downloaded",
+                  "created_by",
+                  "file_id",
+                  "id",
+                  "payload_type_id",
+                  "transport_id"
                 ],
                 "filter": {}
               }
@@ -1757,18 +2795,54 @@ data:
           ],
           "update_permissions": [
             {
-              "role": "operator",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "beacon_interval",
+                  "enabled",
+                  "visible",
+                  "configuration",
+                  "metadata",
+                  "description",
+                  "name",
+                  "staging_key",
+                  "created",
+                  "expiration_date",
+                  "last_downloaded",
+                  "created_by",
+                  "file_id",
+                  "id",
+                  "payload_type_id",
+                  "transport_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
                   "description",
                   "enabled",
-                  "expiration_date",
-                  "jitter",
+                  "metadata",
+                  "name",
                   "visible"
                 ],
                 "filter": {},
-                "check": null
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "description",
+                  "enabled",
+                  "metadata",
+                  "name"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1790,53 +2864,147 @@ data:
               "using": {
                 "foreign_key_constraint_on": "staging_response_id"
               }
-            },
+            }
+          ],
+          "insert_permissions": [
             {
-              "name": "transport",
-              "using": {
-                "foreign_key_constraint_on": "transport_id"
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "source_ip",
+                  "staging_id",
+                  "received",
+                  "id",
+                  "payload_id",
+                  "staging_response_id",
+                  "transport_id"
+                ],
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
-                  "agent_name",
                   "payload_id",
                   "source_ip",
                   "transport_id",
-                  "payload_name",
                   "staging_id",
                   "staging_response_id",
                   "iv",
                   "hmac",
                   "message",
-                  "received"
+                  "received",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "id",
-                  "payload_id",
-                  "staging_response_id",
-                  "transport_id",
-                  "agent_name",
+                  "metadata",
                   "hmac",
                   "iv",
-                  "payload_name",
+                  "message",
                   "source_ip",
                   "staging_id",
                   "received",
-                  "message"
+                  "id",
+                  "payload_id",
+                  "staging_response_id",
+                  "transport_id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "source_ip",
+                  "staging_id",
+                  "received",
+                  "id",
+                  "payload_id",
+                  "staging_response_id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "source_ip",
+                  "staging_id",
+                  "received",
+                  "id",
+                  "payload_id",
+                  "staging_response_id",
+                  "transport_id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "source_ip",
+                  "staging_id",
+                  "received",
+                  "id",
+                  "payload_id",
+                  "staging_response_id",
+                  "transport_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1868,9 +3036,29 @@ data:
               }
             }
           ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "created",
+                  "agent_id",
+                  "id",
+                  "staging_message_id"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
@@ -1880,25 +3068,101 @@ data:
                   "hmac",
                   "message",
                   "created",
-                  "sent"
+                  "sent",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
                   "sent",
-                  "agent_id",
-                  "id",
-                  "staging_message_id",
+                  "metadata",
                   "hmac",
                   "iv",
+                  "message",
                   "created",
-                  "message"
+                  "agent_id",
+                  "id",
+                  "staging_message_id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "created",
+                  "agent_id",
+                  "id",
+                  "staging_message_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "created",
+                  "agent_id",
+                  "id",
+                  "staging_message_id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "sent",
+                  "metadata",
+                  "hmac",
+                  "iv",
+                  "message",
+                  "created",
+                  "agent_id",
+                  "id",
+                  "staging_message_id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "message"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -1922,30 +3186,6 @@ data:
               }
             },
             {
-              "name": "agents",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "transport_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agents"
-                  }
-                }
-              }
-            },
-            {
-              "name": "agent_transports_xrefs",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "transport_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "agent_transports_xref"
-                  }
-                }
-              }
-            },
-            {
               "name": "payloads",
               "using": {
                 "foreign_key_constraint_on": {
@@ -1956,51 +3196,110 @@ data:
                   }
                 }
               }
-            },
+            }
+          ],
+          "insert_permissions": [
             {
-              "name": "staging_messages",
-              "using": {
-                "foreign_key_constraint_on": {
-                  "column": "transport_id",
-                  "table": {
-                    "schema": "public",
-                    "name": "staging_messages"
-                  }
-                }
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "configuration",
+                  "metadata",
+                  "name",
+                  "protocol",
+                  "created",
+                  "id",
+                  "transport_guid"
+                ],
+                "backend_only": false
               }
             }
           ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
+                  "transport_guid",
                   "name",
-                  "transport_type",
-                  "guid",
+                  "protocol",
                   "configuration",
                   "created",
-                  "last_checkin",
                   "enabled",
-                  "visible"
+                  "visible",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
                   "enabled",
                   "visible",
-                  "id",
                   "configuration",
-                  "created",
-                  "last_checkin",
-                  "guid",
+                  "metadata",
                   "name",
-                  "transport_type"
+                  "protocol",
+                  "created",
+                  "id",
+                  "transport_guid"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "configuration",
+                  "metadata",
+                  "name",
+                  "protocol",
+                  "created",
+                  "id",
+                  "transport_guid"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "transport",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "configuration",
+                  "metadata",
+                  "name",
+                  "protocol",
+                  "created",
+                  "id",
+                  "transport_guid"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "configuration",
+                  "metadata",
+                  "name",
+                  "protocol",
+                  "created",
+                  "id",
+                  "transport_guid"
                 ],
                 "filter": {}
               }
@@ -2008,23 +3307,67 @@ data:
           ],
           "update_permissions": [
             {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "configuration",
+                  "metadata",
+                  "name",
+                  "protocol",
+                  "created",
+                  "id",
+                  "transport_guid"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "metadata",
+                  "name",
+                  "visible"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
               "role": "transport",
               "permission": {
                 "columns": [
-                  "configuration",
-                  "created",
                   "enabled",
-                  "guid",
-                  "last_checkin",
+                  "visible",
+                  "configuration",
+                  "metadata",
                   "name",
-                  "transport_type",
-                  "visible"
+                  "protocol",
+                  "created",
+                  "id",
+                  "transport_guid"
                 ],
                 "filter": {
                   "id": {
                     "_eq": "X-Hasura-User-Id"
                   }
                 },
+                "check": null
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "configuration",
+                  "metadata",
+                  "name"
+                ],
+                "filter": {},
                 "check": null
               }
             }
@@ -2061,25 +3404,87 @@ data:
               }
             }
           ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "metadata",
+                  "name",
+                  "id"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "id",
-                  "name"
+                  "name",
+                  "metadata"
                 ],
                 "filter": {}
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "id",
-                  "name"
+                  "metadata",
+                  "name",
+                  "id"
                 ],
                 "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "name",
+                  "id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "name",
+                  "id"
+                ],
+                "filter": {}
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "metadata",
+                  "name",
+                  "id"
+                ],
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "metadata"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
@@ -2123,13 +3528,13 @@ data:
               }
             },
             {
-              "name": "faction_files",
+              "name": "files",
               "using": {
                 "foreign_key_constraint_on": {
                   "column": "user_id",
                   "table": {
                     "schema": "public",
-                    "name": "faction_files"
+                    "name": "files"
                   }
                 }
               }
@@ -2159,15 +3564,36 @@ data:
               }
             }
           ],
+          "insert_permissions": [
+            {
+              "role": "service",
+              "permission": {
+                "check": {},
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "password",
+                  "metadata",
+                  "username",
+                  "created",
+                  "last_login",
+                  "id",
+                  "role_id"
+                ],
+                "backend_only": false
+              }
+            }
+          ],
           "select_permissions": [
             {
-              "role": "operator",
+              "role": "read-only",
               "permission": {
                 "columns": [
                   "created",
                   "enabled",
                   "id",
                   "last_login",
+                  "metadata",
                   "role_id",
                   "username",
                   "visible"
@@ -2176,13 +3602,47 @@ data:
               }
             },
             {
-              "role": "read_only",
+              "role": "service",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "visible",
+                  "password",
+                  "metadata",
+                  "username",
+                  "created",
+                  "last_login",
+                  "id",
+                  "role_id"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "super-user",
               "permission": {
                 "columns": [
                   "created",
                   "enabled",
                   "id",
                   "last_login",
+                  "metadata",
+                  "role_id",
+                  "username",
+                  "visible"
+                ],
+                "filter": {}
+              }
+            },
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "created",
+                  "enabled",
+                  "id",
+                  "last_login",
+                  "metadata",
                   "role_id",
                   "username",
                   "visible"
@@ -2193,17 +3653,34 @@ data:
           ],
           "update_permissions": [
             {
-              "role": "operator",
+              "role": "service",
               "permission": {
                 "columns": [
-                  "password"
+                  "enabled",
+                  "visible",
+                  "password",
+                  "metadata",
+                  "username",
+                  "created",
+                  "last_login",
+                  "id",
+                  "role_id"
                 ],
-                "filter": {
-                  "id": {
-                    "_eq": "X-Hasura-User-Id"
-                  }
-                },
-                "check": null
+                "filter": {},
+                "check": {}
+              }
+            },
+            {
+              "role": "super-user",
+              "permission": {
+                "columns": [
+                  "enabled",
+                  "metadata",
+                  "username",
+                  "visible"
+                ],
+                "filter": {},
+                "check": {}
               }
             }
           ]
