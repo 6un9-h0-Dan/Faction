@@ -1,8 +1,11 @@
-apiVersion: skaffold/v2beta5
+apiVersion: skaffold/v2beta6
 kind: Config
 metadata:
   name: factionc2
 build:
+  local:
+    useBuildkit: true
+    concurrency: 2
   artifacts:
     - image: faction/auth
       context: ../auth-service
