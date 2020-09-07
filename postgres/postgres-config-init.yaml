@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
     name: postgres-config-init
-    namespace: factionc2
     labels:
         app: postgres
 data:
@@ -290,7 +289,7 @@ data:
             user_id          uuid NOT NULL,
             created          timestamp without time zone default (now() at time zone 'utc'),
             last_downloaded  timestamp without time zone,
-            visible          boolean DEFAULT true NOT NULL,
+            enabled          boolean DEFAULT true NOT NULL,
             public_key       text,
             url              text,
             metadata         jsonb

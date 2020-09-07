@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: hasura-config-init
-  namespace: factionc2
   labels:
     app: faction-hasura
 data:
@@ -1881,7 +1880,7 @@ data:
                   "user_id",
                   "created",
                   "last_downloaded",
-                  "visible",
+                  "enabled",
                   "public_key",
                   "url",
                   "metadata"
@@ -1905,7 +1904,7 @@ data:
                   "user_id",
                   "created",
                   "last_downloaded",
-                  "visible",
+                  "enabled",
                   "public_key",
                   "url",
                   "metadata"
@@ -1917,7 +1916,7 @@ data:
               "role": "service",
               "permission": {
                 "columns": [
-                  "visible",
+                  "enabled",
                   "metadata",
                   "description",
                   "file_path",
@@ -1939,7 +1938,7 @@ data:
               "role": "super-user",
               "permission": {
                 "columns": [
-                  "visible",
+                  "enabled",
                   "metadata",
                   "description",
                   "file_path",
@@ -1961,7 +1960,7 @@ data:
               "role": "user",
               "permission": {
                 "columns": [
-                  "visible",
+                  "enabled",
                   "metadata",
                   "description",
                   "file_path",
@@ -1985,7 +1984,7 @@ data:
               "role": "service",
               "permission": {
                 "columns": [
-                  "visible",
+                  "enabled",
                   "metadata",
                   "description",
                   "file_path",
@@ -2009,7 +2008,7 @@ data:
               "permission": {
                 "columns": [
                   "metadata",
-                  "visible"
+                  "enabled"
                 ],
                 "filter": {},
                 "check": {}
@@ -2020,7 +2019,7 @@ data:
               "permission": {
                 "columns": [
                   "metadata",
-                  "visible"
+                  "enabled"
                 ],
                 "filter": {},
                 "check": {}
