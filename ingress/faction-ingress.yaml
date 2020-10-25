@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -16,18 +16,30 @@ spec:
       http:
         paths:
           - path: /?(.*)
+            pathType: ImplementationSpecific
             backend:
-              serviceName: faction-console
-              servicePort: 80
+              service:
+                name: faction-console
+                port:
+                  number: 80
           - path: /api/v1/auth/(.*)
+            pathType: ImplementationSpecific
             backend:
-              serviceName: faction-auth
-              servicePort: 5000
+              service:
+                name: faction-auth
+                port:
+                  number: 5000
           - path: /api/(v1/graphql.*)
+            pathType: ImplementationSpecific
             backend:
-              serviceName: faction-hasura
-              servicePort: 8080
+              service:
+                name: faction-hasura
+                port:
+                  number: 8080
           - path: /api/v1/files/(.*)
+            pathType: ImplementationSpecific
             backend:
-              serviceName: faction-files
-              servicePort: 5000
+              service:
+                name: faction-files
+                port:
+                  number: 5000
